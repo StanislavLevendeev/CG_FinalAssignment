@@ -17,6 +17,8 @@
 #include "VertexArray.h"
 #include "GLProgram.h"
 #include "Geometry.h"
+#include "Material.h"
+#include "Mesh.h"
 
 
 
@@ -41,36 +43,35 @@ struct LightSource
 	glm::vec3 position;
 };
 
-struct Material
-{
-	glm::vec3 ambient_color;
-	glm::vec3 diffuse_color;
-};
-
-
 //--------------------------------------------------------------------------------
 // Variables
 //--------------------------------------------------------------------------------
 
 // ID's
-GLProgram* program_id;
+GLProgram* program;
 Renderer* renderer = nullptr;
 Geometry* cube = nullptr;
 Geometry* torus = nullptr;
-// Uniform ID's
-GLuint uniform_mv;
+Mesh* cubeMesh = nullptr;
+Mesh* torusMesh = nullptr;
 
 // Matrices
 glm::mat4 model, view, projection;
 
 // Material and light
 LightSource light;
-Material material;
+Material* material = nullptr;
 
 glm::vec3 specular;
 float power;
 
+//--------------------------------------------------------------------------------
+// Mouse poesition listener
+//--------------------------------------------------------------------------------
 
+void mousePositionListener(int x, int y) {
+	std::cout << "Mouse position: " << x << " " << y << std::endl;
+}
 
 //--------------------------------------------------------------------------------
 // Keyboard handling
@@ -111,9 +112,9 @@ void Render()
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 	cube->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	cube->Draw(*program_id, view);
+	cubeMesh->Draw(*program, view);
 	torus->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	torus->Draw(*program_id, view);
+	torusMesh->Draw(*program, view);
 
 	glutSwapBuffers();
 
@@ -146,6 +147,7 @@ void InitGlutGlew(int argc, char** argv)
 	glutDisplayFunc(Render);
 	glutKeyboardFunc(keyboardHandler);
 	glutTimerFunc(DELTA_TIME, Render, 0);
+	glutPassiveMotionFunc(mousePositionListener);
 
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
@@ -164,7 +166,7 @@ void InitShaders()
 	Shader vertexShader(GL_VERTEX_SHADER, vertexshader_name);
 	Shader fragmentShader(GL_FRAGMENT_SHADER, fragshader_name);
 	Shader shaders[2] = { vertexShader, fragmentShader };
-	program_id = new GLProgram(shaders, 2);
+	program = new GLProgram(shaders, 2);
 }
 
 
@@ -192,46 +194,29 @@ void InitMatrices()
 void InitMaterialsLight()
 {
 	light.position = glm::vec3(4.0, 4.0, 4.0);
-	material.ambient_color = glm::vec3(0.2, 0.2, 0.1);
-	material.diffuse_color = glm::vec3(0.5, 0.5, 0.3);
-	specular = glm::vec3(1.0, 1.0, 1.0);
-	power = 0;
+
 }
 void InitUniforms() {
-	// Make uniform vars
-	uniform_mv = program_id->GetUniformLocation("mv");
-	program_id->SetUniformMat4fv("projection", projection);
+	program->SetUniformMat4fv("projection", projection);
 
+	program->SetUniform3fv("light_pos", light.position);
 
-	program_id->SetUniform3fv("light_pos", light.position);
-
-
-	program_id->SetUniform3fv("mat_ambient", material.ambient_color);
-	program_id->SetUniform3fv("mat_diffuse", material.diffuse_color);
-	program_id->SetUniform3fv("mat_specular", specular);
-	program_id->SetUniform1f("mat_power", power);
+	material->SetUniforms(*program);
 }
 void InitGeometry() {
-	cube = new Geometry();
 	vector<glm::vec3> vertices, normals;
 	vector<glm::vec2> uvs;
 	bool res;
 	res = loadOBJ("Objects/box.obj", vertices, uvs, normals);
-	(*cube).SetVertices(vertices, program_id->GetID());
-	(*cube).SetNormals(normals, program_id->GetID());
-	(*cube).SetUVs(uvs, program_id->GetID());
+	cube = new Geometry(vertices, normals, uvs, program->GetID());
 
-	torus = new Geometry();
 	vector<glm::vec3> vertices2, normals2;
 	vector<glm::vec2> uvs2;
 	bool res2;
 	res2 = loadOBJ("Objects/torus.obj", vertices2, uvs2, normals2);
-	(*torus).SetVertices(vertices2, program_id->GetID());
-	(*torus).SetNormals(normals2, program_id->GetID());
-	(*torus).SetUVs(uvs2, program_id->GetID());
+
+	torus = new Geometry(vertices2, normals2, uvs2, program->GetID());
 	(*torus).Translate(glm::vec3(2.0, 0.0, 0.0));
-
-
 }
 void InitTextures() {
 	cube->SetTexture(new Texture("Textures/Yellobrk.bmp"));
@@ -240,18 +225,32 @@ void InitTextures() {
 void InitRenderer() {
 	renderer = &Renderer::GetInstance();
 }
+
+void InitMeshes() {
+	cubeMesh = new Mesh(cube, material);
+	torusMesh = new Mesh(torus, material);
+}
+
+void InitMaterial() {
+	material = new Material();
+	material->ambient = glm::vec3(0.2, 0.2, 0.1);
+	material->diffuse = glm::vec3(0.5, 0.5, 0.3);
+	material->specular = glm::vec3(1.0, 1.0, 1.0);
+	material->shininess = 1024;
+}
 int main(int argc, char** argv)
 {
 
 	InitGlutGlew(argc, argv);
 	InitShaders();
-	InitMatrices();
 	InitRenderer();
+	InitMatrices();
 	InitGeometry();
 	InitTextures();
+	InitMaterial();
+	InitMeshes();
 	InitUniforms();
 	InitMaterialsLight();
-	//InitBuffers();
 
 	// Hide console window
 	HWND hWnd = GetConsoleWindow();
