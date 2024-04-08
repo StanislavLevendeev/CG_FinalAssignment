@@ -4,10 +4,12 @@
 #include "VertexArray.h"
 #include "GLProgram.h"
 #include "Texture.h"
+
 class Geometry
 {
 public:
 	Geometry();
+	Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> uvs, const GLuint);
 	~Geometry();
 	void Draw(GLProgram& program, const glm::mat4 view) const;
 	void SetVertices(std::vector<glm::vec3> vertices, const GLuint);

@@ -10,6 +10,16 @@ Geometry::Geometry()
 {
 }
 
+Geometry::Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> uvs, const GLuint program) :
+	texture(nullptr),
+	model(1.0f),
+	vao(new VertexArray())
+{
+	SetVertices(vertices, program);
+	SetNormals(normals, program);
+	SetUVs(uvs, program);
+}
+
 Geometry::~Geometry()
 {
 	delete vao;
