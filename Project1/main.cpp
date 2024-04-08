@@ -54,7 +54,7 @@ struct Material
 // ID's
 GLProgram* program_id;
 VertexArray* vao = nullptr;
-Renderer renderer;
+Renderer* renderer = nullptr;
 Texture* texture;
 
 // Uniform ID's
@@ -89,6 +89,22 @@ void keyboardHandler(unsigned char key, int a, int b)
 {
 	if (key == 27)
 		glutExit();
+	//if pressed W outzoom the camera by changing view matrix
+	//if pressed arrow down inzoom the camera by changing view matrix
+
+	if (key == 'W') {
+		view = glm::lookAt(
+			glm::vec3(0.0, 2.0, 6.0),
+			glm::vec3(0.0, 0.5, 0.0),
+			glm::vec3(0.0, 1.0, 0.0));
+	}
+	if (key == 'w') {
+		view = glm::lookAt(
+			glm::vec3(0.0, 2.0, 2.0),
+			glm::vec3(0.0, 0.5, 0.0),
+			glm::vec3(0.0, 1.0, 0.0));
+	}
+	std::cout << "Key pressed: " << key << std::endl;
 }
 
 //--------------------------------------------------------------------------------
@@ -103,11 +119,18 @@ void keyboardHandler(unsigned char key, int a, int b)
 
 void Render()
 {
+	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	// Do transformation
+	glm::vec3 translation(1.0f, 2.0f, 3.0f);
+	mv = view * glm::translate(model, translation);
+
+	renderer->Draw(*vao, *program_id, vertices.size(), mv);
+
 	model = glm::rotate(model, 0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
 	mv = view * model;
 
-	renderer.Draw(*vao, *program_id, vertices.size(), mv);
+	renderer->Draw(*vao, *program_id, vertices.size(), mv);
+
 	texture->Bind();
 	// Swap buffers
 	glutSwapBuffers();
@@ -259,11 +282,14 @@ void InitUniforms() {
 void InitTextures() {
 	texture = new Texture("Textures/Yellobrk.bmp");
 }
-
+void InitRenderer() {
+	renderer = &Renderer::getInstance();
+}
 int main(int argc, char** argv)
 {
 
 	InitGlutGlew(argc, argv);
+	InitTextures();
 	InitShaders();
 	InitMatrices();
 	InitUniforms();

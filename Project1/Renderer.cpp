@@ -12,10 +12,10 @@ bool GLLogCall(const char* function, const char* file, int line) {//ASSERT(GLLog
 	}
 	return true;
 }
-
+Renderer* Renderer::instance = nullptr;
 void Renderer::Draw(const VertexArray& va, GLProgram& program, const int count, const glm::mat4 mv) const
 {
-	Clear();
+	//Clear();
 	va.Bind();
 	program.Bind();
 	program.SetUniformMat4fv("mv", mv);
