@@ -5,12 +5,8 @@
 #include <GL/glew.h>
 #include "Texture.h"
 #include "Renderer.h"
-void Texture::Disable()
-{
-	GLCall(glDeleteTextures(1, &rendererID));
-}
 Texture::Texture(const std::string& path)
-	:rendererID(0), filePath(path), width(0), height(0), BPP(0)
+	:rendererID(0), filePath(path)
 {
 	//flip the image
 	GLCall(rendererID = loadBMP(path.c_str()));

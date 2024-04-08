@@ -54,9 +54,7 @@ struct Material
 
 // ID's
 GLProgram* program_id;
-VertexArray* vao = nullptr;
 Renderer* renderer = nullptr;
-Texture* texture;
 Geometry* cube = nullptr;
 Geometry* torus = nullptr;
 // Uniform ID's
@@ -64,7 +62,6 @@ GLuint uniform_mv;
 
 // Matrices
 glm::mat4 model, view, projection;
-glm::mat4 mv;
 
 // Material and light
 LightSource light;
@@ -83,9 +80,6 @@ void keyboardHandler(unsigned char key, int a, int b)
 {
 	if (key == 27)
 		glutExit();
-	//if pressed W outzoom the camera by changing view matrix
-	//if pressed arrow down inzoom the camera by changing view matrix
-
 	if (key == 'W') {
 		view = glm::lookAt(
 			glm::vec3(0.0, 2.0, 6.0),
@@ -106,11 +100,6 @@ void keyboardHandler(unsigned char key, int a, int b)
 	}
 	std::cout << "Key pressed: " << key << std::endl;
 }
-
-//--------------------------------------------------------------------------------
-// Error handling
-//--------------------------------------------------------------------------------
-
 
 
 //--------------------------------------------------------------------------------
@@ -153,7 +142,7 @@ void InitGlutGlew(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(WIDTH, HEIGHT);
-	glutCreateWindow("Hello OpenGL");
+	glutCreateWindow("Stanislav Levendeev's scene (s1169467)");
 	glutDisplayFunc(Render);
 	glutKeyboardFunc(keyboardHandler);
 	glutTimerFunc(DELTA_TIME, Render, 0);
@@ -194,7 +183,6 @@ void InitMatrices()
 		glm::radians(45.0f),
 		1.0f * WIDTH / HEIGHT, 0.1f,
 		20.0f);
-	mv = view * model;
 }
 
 //------------------------------------------------------------
