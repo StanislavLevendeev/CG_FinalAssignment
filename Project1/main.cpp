@@ -57,7 +57,8 @@ GLProgram* program_id;
 VertexArray* vao = nullptr;
 Renderer* renderer = nullptr;
 Texture* texture;
-Geometry* geometry = nullptr;
+Geometry* cube = nullptr;
+Geometry* torus = nullptr;
 // Uniform ID's
 GLuint uniform_mv;
 
@@ -97,6 +98,12 @@ void keyboardHandler(unsigned char key, int a, int b)
 			glm::vec3(0.0, 0.5, 0.0),
 			glm::vec3(0.0, 1.0, 0.0));
 	}
+	if (key == 'd') {
+		(*torus).Translate(glm::vec3(0.1, 0.0, 0.0));
+	}
+	if (key == 'D') {
+		(*torus).Translate(glm::vec3(-0.1, 0.0, 0.0));
+	}
 	std::cout << "Key pressed: " << key << std::endl;
 }
 
@@ -114,10 +121,11 @@ void Render()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-	(*geometry).Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	(*geometry).Draw(*program_id, view);
+	cube->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
+	cube->Draw(*program_id, view);
+	torus->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
+	torus->Draw(*program_id, view);
 
-	texture->Bind();
 	glutSwapBuffers();
 
 }
@@ -199,7 +207,7 @@ void InitMaterialsLight()
 	material.ambient_color = glm::vec3(0.2, 0.2, 0.1);
 	material.diffuse_color = glm::vec3(0.5, 0.5, 0.3);
 	specular = glm::vec3(1.0, 1.0, 1.0);
-	power = 1024;
+	power = 0;
 }
 void InitUniforms() {
 	// Make uniform vars
@@ -216,17 +224,30 @@ void InitUniforms() {
 	program_id->SetUniform1f("mat_power", power);
 }
 void InitGeometry() {
-	geometry = new Geometry();
+	cube = new Geometry();
 	vector<glm::vec3> vertices, normals;
 	vector<glm::vec2> uvs;
 	bool res;
 	res = loadOBJ("Objects/box.obj", vertices, uvs, normals);
-	(*geometry).SetVertices(vertices, program_id->GetID());
-	(*geometry).SetNormals(normals, program_id->GetID());
-	(*geometry).SetUVs(uvs, program_id->GetID());
+	(*cube).SetVertices(vertices, program_id->GetID());
+	(*cube).SetNormals(normals, program_id->GetID());
+	(*cube).SetUVs(uvs, program_id->GetID());
+
+	torus = new Geometry();
+	vector<glm::vec3> vertices2, normals2;
+	vector<glm::vec2> uvs2;
+	bool res2;
+	res2 = loadOBJ("Objects/torus.obj", vertices2, uvs2, normals2);
+	(*torus).SetVertices(vertices2, program_id->GetID());
+	(*torus).SetNormals(normals2, program_id->GetID());
+	(*torus).SetUVs(uvs2, program_id->GetID());
+	(*torus).Translate(glm::vec3(2.0, 0.0, 0.0));
+
+
 }
 void InitTextures() {
-	texture = new Texture("Textures/Yellobrk.bmp");
+	cube->SetTexture(new Texture("Textures/Yellobrk.bmp"));
+	torus->SetTexture(new Texture("Textures/uvtemplate.bmp"));
 }
 void InitRenderer() {
 	renderer = &Renderer::GetInstance();
@@ -236,10 +257,10 @@ int main(int argc, char** argv)
 
 	InitGlutGlew(argc, argv);
 	InitShaders();
-	InitTextures();
 	InitMatrices();
 	InitRenderer();
 	InitGeometry();
+	InitTextures();
 	InitUniforms();
 	InitMaterialsLight();
 	//InitBuffers();

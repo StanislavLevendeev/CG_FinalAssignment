@@ -4,27 +4,34 @@
 
 #include <GL/glew.h>
 #include "Texture.h"
+#include "Renderer.h"
+void Texture::Disable()
+{
+	GLCall(glDeleteTextures(1, &rendererID));
+}
 Texture::Texture(const std::string& path)
 	:rendererID(0), filePath(path), width(0), height(0), BPP(0)
 {
 	//flip the image
-	rendererID = loadBMP(path.c_str());
+	GLCall(rendererID = loadBMP(path.c_str()));
 
 }
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &rendererID);
+	GLCall(glDeleteTextures(1, &rendererID));
 }
+
 
 void Texture::Bind(unsigned int slot) const
 {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, rendererID); 
+	GLCall(glActiveTexture(GL_TEXTURE0 + slot));
+	GLCall(glBindTexture(GL_TEXTURE_2D, rendererID));
 }
 
 void Texture::Unbind() const
 {
+	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 

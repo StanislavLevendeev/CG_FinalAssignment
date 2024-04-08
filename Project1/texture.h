@@ -21,6 +21,7 @@ private:
 	int width, height, BPP;
 	//unsigned char* localBuffer;
 public:
+	void Disable();
 	Texture(const std::string& path);
 	~Texture();
 	void Bind(unsigned int slot = 0) const;

@@ -2,8 +2,12 @@
 #include "Renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
 Geometry::Geometry()
+	:
+	texture(nullptr),
+	model(1.0f),
+	vao(new VertexArray()),
+	vertices(), normals(), uvs()
 {
-	vao = new VertexArray();
 }
 
 Geometry::~Geometry()
@@ -14,8 +18,10 @@ Geometry::~Geometry()
 
 void Geometry::Draw(GLProgram& program, const glm::mat4 view) const
 {
+	if (texture != nullptr) texture->Bind();
 	glm::mat4 mv = view * model;
 	Renderer::GetInstance().Draw(*vao, program, vertices.size(), mv);
+	if (texture != nullptr)	texture->Unbind();
 }
 
 
@@ -34,6 +40,11 @@ void Geometry::SetNormals(std::vector<glm::vec3> normals, const GLuint programID
 	VertexBuffer* vbo = new VertexBuffer(&normals[0], normals.size() * sizeof(glm::vec3));
 	VertexAttribute* vao = new VertexAttribute(programID, "normal", 3, GL_FLOAT, GL_FALSE);
 	this->vao->AddBuffer(*vao, *vbo);
+}
+
+void Geometry::SetTexture(Texture* texture)
+{
+	this->texture = texture;
 }
 
 void Geometry::SetUVs(std::vector<glm::vec2> uvs, const GLuint programID)
