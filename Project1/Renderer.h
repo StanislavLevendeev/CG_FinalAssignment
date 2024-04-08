@@ -38,7 +38,7 @@ public:
     void Draw(const VertexArray& va, GLProgram& program, const int, glm::mat4 mv) const;
     void Draw(const VertexArray& va, const IndexBuffer& ib, const GLProgram& program, glm::mat4 mv) const;
     void Clear() const;
-    static Renderer& getInstance()
+    static Renderer& GetInstance()
     {
         // If the instance doesn't exist, create it
         if (!instance) {

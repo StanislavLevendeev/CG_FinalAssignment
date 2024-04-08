@@ -16,6 +16,7 @@
 #include "VertexAttribute.h"
 #include "VertexArray.h"
 #include "GLProgram.h"
+#include "Geometry.h"
 
 
 
@@ -56,7 +57,7 @@ GLProgram* program_id;
 VertexArray* vao = nullptr;
 Renderer* renderer = nullptr;
 Texture* texture;
-
+Geometry* geometry = nullptr;
 // Uniform ID's
 GLuint uniform_mv;
 
@@ -71,14 +72,6 @@ Material material;
 glm::vec3 specular;
 float power;
 
-
-//--------------------------------------------------------------------------------
-// Mesh variables
-//--------------------------------------------------------------------------------
-
-vector<glm::vec3> vertices;
-vector<glm::vec3> normals;
-vector<glm::vec2> uvs;
 
 
 //--------------------------------------------------------------------------------
@@ -120,19 +113,11 @@ void keyboardHandler(unsigned char key, int a, int b)
 void Render()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	// Do transformation
-	glm::vec3 translation(1.0f, 2.0f, 3.0f);
-	mv = view * glm::translate(model, translation);
 
-	renderer->Draw(*vao, *program_id, vertices.size(), mv);
-
-	model = glm::rotate(model, 0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	mv = view * model;
-
-	renderer->Draw(*vao, *program_id, vertices.size(), mv);
+	(*geometry).Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
+	(*geometry).Draw(*program_id, view);
 
 	texture->Bind();
-	// Swap buffers
 	glutSwapBuffers();
 
 }
@@ -204,20 +189,6 @@ void InitMatrices()
 	mv = view * model;
 }
 
-
-//------------------------------------------------------------
-// void InitObjects()
-//------------------------------------------------------------
-
-void InitObjects()
-{
-	bool res;
-
-	// Objects
-	res = loadOBJ("Objects/box.obj", vertices, uvs, normals);
-}
-
-
 //------------------------------------------------------------
 // void InitMaterialsLight()
 //------------------------------------------------------------
@@ -229,74 +200,49 @@ void InitMaterialsLight()
 	material.diffuse_color = glm::vec3(0.5, 0.5, 0.3);
 	specular = glm::vec3(1.0, 1.0, 1.0);
 	power = 1024;
-	//material.diffuse_color = glm::vec3(0.5, 0.0, 0.0);
-}
-
-
-//------------------------------------------------------------
-// void InitBuffers()
-// Allocates and fills buffers
-//------------------------------------------------------------
-
-void InitBuffers()
-{
-	VertexBuffer vbo_vertex(&vertices[0], vertices.size() * sizeof(glm::vec3));
-	VertexBuffer vbo_normal(&normals[0], normals.size() * sizeof(glm::vec3));
-	VertexBuffer vbo_uv(&uvs[0], uvs.size() * sizeof(glm::vec2));
-
-	VertexAttribute position(program_id->GetID(), "position", 3, GL_FLOAT, GL_FALSE);
-	VertexAttribute normal(program_id->GetID(), "normal", 3, GL_FLOAT, GL_FALSE);
-	VertexAttribute uv(program_id->GetID(), "uv", 2, GL_FLOAT, GL_FALSE);
-	// Allocate memory for vao
-
-	vao = new VertexArray();
-
-	// Bind to vao
-
-	// Bind vertices to vao
-
-	(*vao).AddBuffer(position, vbo_vertex);
-
-	// Bind normals to vao
-	(*vao).AddBuffer(normal, vbo_normal);
-
-	// Bind uvs to vao
-	(*vao).AddBuffer(uv, vbo_uv);
-
-	// Stop bind to vao
-	(*vao).Unbind();
-
-
 }
 void InitUniforms() {
 	// Make uniform vars
 	uniform_mv = program_id->GetUniformLocation("mv");
 	program_id->SetUniformMat4fv("projection", projection);
+
+
 	program_id->SetUniform3fv("light_pos", light.position);
+
+
 	program_id->SetUniform3fv("mat_ambient", material.ambient_color);
 	program_id->SetUniform3fv("mat_diffuse", material.diffuse_color);
 	program_id->SetUniform3fv("mat_specular", specular);
 	program_id->SetUniform1f("mat_power", power);
 }
-
+void InitGeometry() {
+	geometry = new Geometry();
+	vector<glm::vec3> vertices, normals;
+	vector<glm::vec2> uvs;
+	bool res;
+	res = loadOBJ("Objects/box.obj", vertices, uvs, normals);
+	(*geometry).SetVertices(vertices, program_id->GetID());
+	(*geometry).SetNormals(normals, program_id->GetID());
+	(*geometry).SetUVs(uvs, program_id->GetID());
+}
 void InitTextures() {
 	texture = new Texture("Textures/Yellobrk.bmp");
 }
 void InitRenderer() {
-	renderer = &Renderer::getInstance();
+	renderer = &Renderer::GetInstance();
 }
 int main(int argc, char** argv)
 {
 
 	InitGlutGlew(argc, argv);
-	InitTextures();
 	InitShaders();
-	InitMatrices();
-	InitUniforms();
-	InitObjects();
 	InitTextures();
+	InitMatrices();
+	InitRenderer();
+	InitGeometry();
+	InitUniforms();
 	InitMaterialsLight();
-	InitBuffers();
+	//InitBuffers();
 
 	// Hide console window
 	HWND hWnd = GetConsoleWindow();

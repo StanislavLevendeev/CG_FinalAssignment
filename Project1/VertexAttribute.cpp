@@ -4,7 +4,7 @@
 VertexAttribute::VertexAttribute(GLuint program, const GLchar* name, GLint size, GLenum type, GLboolean normalized)
 	:size(size), type(type), normalized(normalized)
 {
-	this->rendererID = glGetAttribLocation(program, name);
+	GLCall(this->rendererID = glGetAttribLocation(program, name));
 }
 
 VertexAttribute::~VertexAttribute()
