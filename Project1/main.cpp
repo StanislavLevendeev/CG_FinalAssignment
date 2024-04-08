@@ -20,6 +20,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Light.h"
+#include "Camera.h"
 
 
 
@@ -56,10 +57,10 @@ Mesh* torusMesh = nullptr;
 // Matrices
 glm::mat4 model, view, projection;
 
+Camera cam;
+
 Material* material = nullptr;
 
-glm::vec3 specular;
-float power;
 
 //--------------------------------------------------------------------------------
 // Mouse poesition listener
@@ -67,6 +68,7 @@ float power;
 
 void mousePositionListener(int x, int y) {
 	std::cout << "Mouse position: " << x << " " << y << std::endl;
+	cam.ProcessMouseMovement(x, y);
 }
 
 //--------------------------------------------------------------------------------
@@ -77,6 +79,22 @@ void keyboardHandler(unsigned char key, int a, int b)
 {
 	if (key == 27)
 		glutExit();
+	if (key == 'I') {
+		cam.Move(FORWARD, 1);
+		view = cam.GetViewMatrix();
+	}
+	if (key == 'K') {
+		cam.Move(BACKWARD, 1);
+		view = cam.GetViewMatrix();
+	}
+	if (key == 'L') {
+		cam.Move(RIGHT, 1);
+		view = cam.GetViewMatrix();
+	}
+	if (key == 'J') {
+		cam.Move(LEFT, 1);
+		view = cam.GetViewMatrix();
+	}
 	if (key == 'W') {
 		view = glm::lookAt(
 			glm::vec3(0.0, 2.0, 6.0),
@@ -108,9 +126,9 @@ void Render()
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 	cube->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	cubeMesh->Draw(*program, view);
+	cubeMesh->Draw(*program, cam.GetViewMatrix());
 	torus->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	torusMesh->Draw(*program, view);
+	torusMesh->Draw(*program, cam.GetViewMatrix());
 
 	glutSwapBuffers();
 
@@ -173,10 +191,8 @@ void InitShaders()
 void InitMatrices()
 {
 	model = glm::mat4();
-	view = glm::lookAt(
-		glm::vec3(0.0, 2.0, 4.0),
-		glm::vec3(0.0, 0.5, 0.0),
-		glm::vec3(0.0, 1.0, 0.0));
+	view = cam.GetViewMatrix();
+
 	projection = glm::perspective(
 		glm::radians(45.0f),
 		1.0f * WIDTH / HEIGHT, 0.1f,
