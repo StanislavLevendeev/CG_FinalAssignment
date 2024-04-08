@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "VertexArray.h"
 #include "GLProgram.h"
 #include "Texture.h"

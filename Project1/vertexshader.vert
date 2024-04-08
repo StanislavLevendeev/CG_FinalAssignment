@@ -1,9 +1,14 @@
 #version 430 core
 
+struct Light
+{
+    vec3 position;
+};
+
 // Uniform inputs
 uniform mat4 mv;
 uniform mat4 projection;
-uniform vec3 light_pos;
+uniform Light light;
 
 // Per-vertex inputs
 in vec3 position;
@@ -29,7 +34,7 @@ void main()
     vs_out.N = mat3(mv) * normal;
 
     // Calculate light vector
-    vs_out.L = light_pos - P.xyz;
+    vs_out.L = light.position - P.xyz;
 
     // Calculate view vector;
     vs_out.V = -P.xyz;

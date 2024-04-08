@@ -19,6 +19,7 @@
 #include "Geometry.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Light.h"
 
 
 
@@ -38,10 +39,7 @@ unsigned const int DELTA_TIME = 10;
 // Typedefs
 //--------------------------------------------------------------------------------
 
-struct LightSource
-{
-	glm::vec3 position;
-};
+Light* light;
 
 //--------------------------------------------------------------------------------
 // Variables
@@ -58,8 +56,6 @@ Mesh* torusMesh = nullptr;
 // Matrices
 glm::mat4 model, view, projection;
 
-// Material and light
-LightSource light;
 Material* material = nullptr;
 
 glm::vec3 specular;
@@ -193,15 +189,12 @@ void InitMatrices()
 
 void InitMaterialsLight()
 {
-	light.position = glm::vec3(4.0, 4.0, 4.0);
+	light = new Light(glm::vec3(4.0, 4.0, 4.0));
 
 }
 void InitUniforms() {
 	program->SetUniformMat4fv("projection", projection);
-
-	program->SetUniform3fv("light_pos", light.position);
-
-	material->SetUniforms(*program);
+	light->SetUniforms(*program);
 }
 void InitGeometry() {
 	vector<glm::vec3> vertices, normals;
@@ -249,8 +242,8 @@ int main(int argc, char** argv)
 	InitTextures();
 	InitMaterial();
 	InitMeshes();
-	InitUniforms();
 	InitMaterialsLight();
+	InitUniforms();
 
 	// Hide console window
 	HWND hWnd = GetConsoleWindow();
