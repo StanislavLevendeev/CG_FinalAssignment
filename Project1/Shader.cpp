@@ -33,7 +33,8 @@ void Shader::Compile()
 	{
 		GLCall(char* fragshader = glsl::readFile(filepath.c_str()));
 		GLCall(rendererID = glsl::makeFragmentShader(fragshader));
-	}	break;
+	}	
+	break;
 	default:
 		std::cout << "Invalid shader type" << std::endl;
 		break;

@@ -19,13 +19,14 @@ public:
 	void Translate(glm::vec3 translation);
 	void Rotate(float angle, glm::vec3 axis);
 	void Scale(glm::vec3 scale);
+	bool HasTexture() const;
 	VertexArray* vao;
 	glm::mat4 GetModelMatrix() const;
 	Texture* texture;
+	glm::vec3 color;
 private:
 	glm::mat4 model;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> uvs;
-
 };

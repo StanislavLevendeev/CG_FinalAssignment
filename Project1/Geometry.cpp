@@ -29,6 +29,11 @@ Geometry::~Geometry()
 void Geometry::Draw(GLProgram& program, const glm::mat4 view) const
 {
 	if (texture != nullptr) texture->Bind();
+	else {
+		program.SetUniform3fv("objectColor", color);
+	}
+	program.SetUniform1i("useTexture", HasTexture() ? 1 : 0);
+
 	glm::mat4 mv = view * model;
 	Renderer::GetInstance().Draw(*vao, program, vertices.size(), mv);
 	if (texture != nullptr)	texture->Unbind();
@@ -78,6 +83,11 @@ void Geometry::Rotate(float angle, glm::vec3 axis)
 void Geometry::Scale(glm::vec3 scale)
 {
 	model = glm::scale(model, scale);
+}
+
+bool Geometry::HasTexture() const
+{
+	return texture != nullptr;
 }
 
 

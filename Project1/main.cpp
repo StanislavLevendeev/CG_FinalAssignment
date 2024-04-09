@@ -229,7 +229,7 @@ void InitGeometry() {
 }
 void InitTextures() {
 	cube->SetTexture(new Texture("Textures/Yellobrk.bmp"));
-	torus->SetTexture(new Texture("Textures/uvtemplate.bmp"));
+	torus->color = glm::vec3(0.0, 1.0, 0.0);
 }
 void InitRenderer() {
 	renderer = &Renderer::GetInstance();

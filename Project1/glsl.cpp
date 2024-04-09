@@ -1,4 +1,5 @@
 #include "glsl.h"
+#include "Renderer.h"
 
 char* glsl::contents;
 
@@ -58,8 +59,8 @@ GLuint glsl::makeVertexShader(const char* shaderSource)
 GLuint glsl::makeFragmentShader(const char* shaderSource)
 {
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShaderID, 1, (const GLchar**)&shaderSource, NULL);
-    glCompileShader(fragmentShaderID);
+    GLCall(glShaderSource(fragmentShaderID, 1, (const GLchar**)&shaderSource, NULL));
+    GLCall(glCompileShader(fragmentShaderID));
     //delete[] source;
     bool compiledCorrectly = compiledStatus(fragmentShaderID);
     if (compiledCorrectly) {

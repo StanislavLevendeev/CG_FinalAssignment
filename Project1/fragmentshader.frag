@@ -20,6 +20,8 @@ in VS_OUT
 out vec4 fragColor;
 in vec2 UV;
 uniform sampler2D texsampler;
+uniform bool useTexture;
+uniform vec3 objectColor;
 void main()
 {
     // Normalize the incoming N, L and V vectors
@@ -32,7 +34,15 @@ void main()
 
     // Compute the diffuse and specular components for each fragment
     // vec3 diffuse = max(dot(N, L), 0.0) * material.diffuse;
-    vec3 diffuse = max(dot(N, L), 0.0) * texture2D(texsampler, UV).rgb;
+    vec3 diffuse;
+
+    if (useTexture) {
+        // Use texture color
+        diffuse = max(dot(N, L), 0.0) * texture(texsampler, UV).rgb;
+    } else {
+        // Use object color
+        diffuse = max(dot(N, L), 0.0) * objectColor;
+    }
 
     vec3 specular = pow(max(dot(R, V), 0.0), material.shininess) * material.specular;
 
