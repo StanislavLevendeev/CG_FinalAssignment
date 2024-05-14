@@ -13,12 +13,12 @@ enum Camera_Movement {
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 2.5f;
-const float SENSITIVITY = 0.001f;
+const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 class Camera
 {
 public:
-	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) 
+	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH)
 		: front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVITY), zoom(ZOOM)
 	{
 		this->position = position;
@@ -42,6 +42,7 @@ public:
 		if (direction == RIGHT)
 			position += right * velocity;
 	};
+
 	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
 	{
 		xoffset *= mouseSensitivity;
@@ -69,6 +70,9 @@ public:
 			zoom = 1.0f;
 		if (zoom > 45.0f)
 			zoom = 45.0f;
+	}
+	glm::mat4 GetProjectionMatrix(float aspectRatio) const {
+		return glm::perspective(glm::radians(zoom), aspectRatio, 0.1f, 100.0f);
 	}
 private:
 	void UpdateCameraVectors() {

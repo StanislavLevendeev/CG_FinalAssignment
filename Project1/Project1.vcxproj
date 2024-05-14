@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GLProgram.cpp" />
     <ClCompile Include="glsl.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="objloader.cpp" />
+    <ClCompile Include="PrimitiveGeometry.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -148,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GLProgram.h" />
     <ClInclude Include="glsl.h" />
@@ -156,9 +159,11 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="objloader.h" />
+    <ClInclude Include="PrimitiveGeometry.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="Transformable.h" />
     <ClInclude Include="Uniform.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexAttribute.h" />
