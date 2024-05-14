@@ -36,7 +36,7 @@ private:
     static Renderer* instance;
 public:
     void Draw(const VertexArray& va, GLProgram& program, const int, glm::mat4 mv) const;
-    void Draw(const VertexArray& va, const IndexBuffer& ib, const GLProgram& program, glm::mat4 mv) const;
+    void Draw(const VertexArray& va, const IndexBuffer& ib, GLProgram& program, glm::mat4 mv) const;
     void Clear() const;
     static Renderer& GetInstance()
     {

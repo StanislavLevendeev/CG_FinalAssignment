@@ -15,22 +15,30 @@ bool GLLogCall(const char* function, const char* file, int line) {//ASSERT(GLLog
 Renderer* Renderer::instance = nullptr;
 void Renderer::Draw(const VertexArray& va, GLProgram& program, const int count, const glm::mat4 mv) const
 {
-	//Clear();
+	Clear();
 	va.Bind();
 	program.Bind();
 	program.SetUniformMat4fv("mv", mv);
 
-	glDrawArrays(GL_TRIANGLES, 0, count);
+	GLCall(glDrawArrays(GL_TRIANGLES, 0, count));
 
 	//GLCall(glutSwapBuffers());
 }
 
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const GLProgram& program, glm::mat4 mv) const
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, GLProgram& program, glm::mat4 mv) const
 {
+	Clear();
+	va.Bind();
+	ib.Bind();
+	program.Bind();
+	program.SetUniformMat4fv("mv", mv);
+
+	GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
+	//GLCall(glutSwapBuffers());
 }
 
 void Renderer::Clear() const
 {
-	GLCall(glClearColor(0.0, 0.0, 0.0, 1.0));
-	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	//GLCall(glClearColor(0.0, 0.0, 0.0, 1.0));
+	//GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
