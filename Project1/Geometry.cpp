@@ -44,10 +44,13 @@ void Geometry::Draw(GLProgram& program, const glm::mat4 view) const
 void Geometry::SetVertices(std::vector<glm::vec3> vertices, const GLuint programID)
 {
 	this->vertices = vertices;
+	CalculateDimensions();
 	VertexBuffer* vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(glm::vec3));
 	VertexAttribute* vao = new VertexAttribute(programID, "position", 3, GL_FLOAT, GL_FALSE);
 	this->vao->AddBuffer(*vao, *vbo);
 }
+
+
 
 void Geometry::SetNormals(std::vector<glm::vec3> normals, const GLuint programID)
 {
@@ -94,4 +97,24 @@ bool Geometry::HasTexture() const
 glm::mat4 Geometry::GetModelMatrix() const
 {
 	return model;
+}
+
+void Geometry::CalculateDimensions()
+{
+	float minX = vertices[0].x, minY = vertices[0].y, minZ = vertices[0].z;
+	float maxX = vertices[0].x, maxY = vertices[0].y, maxZ = vertices[0].z;
+
+	for (const auto& vertex : vertices) {
+		if (vertex.x < minX) minX = vertex.x;
+		if (vertex.y < minY) minY = vertex.y;
+		if (vertex.z < minZ) minZ = vertex.z;
+		if (vertex.x > maxX) maxX = vertex.x;
+		if (vertex.y > maxY) maxY = vertex.y;
+		if (vertex.z > maxZ) maxZ = vertex.z;
+	}
+
+	dimensions.width = maxX - minX;
+	dimensions.height = maxY - minY;
+	dimensions.depth = maxZ - minZ;
+
 }
