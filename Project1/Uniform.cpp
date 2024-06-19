@@ -6,5 +6,5 @@ Uniform::Uniform(GLfloat* data, UniformType type, const std::string& name) :
 }
 Uniform::~Uniform()
 {
-	delete data;
+	delete[] data;
 }

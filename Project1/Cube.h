@@ -5,6 +5,7 @@ class Cube : public PrimitiveGeometry
 {
 public:
 	Cube();
+	Cube(const GLuint);
 	Cube(float height, float width, float depth);
 
 

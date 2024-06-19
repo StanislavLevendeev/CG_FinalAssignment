@@ -52,7 +52,8 @@ void Geometry::SetVertices(std::vector<glm::vec3> vertices, const GLuint program
 	CalculateDimensions();
 	VertexBuffer* vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(glm::vec3));
 	VertexAttribute* vao = new VertexAttribute(programID, "position", 3, GL_FLOAT, GL_FALSE);
-	this->vao->AddBuffer(*vao, *vbo);
+	this->vao->AddBuffer(vao, vbo);
+	//delete vbo, vao;
 }
 
 
@@ -62,7 +63,8 @@ void Geometry::SetNormals(std::vector<glm::vec3> normals, const GLuint programID
 	this->normals = normals;
 	VertexBuffer* vbo = new VertexBuffer(&normals[0], normals.size() * sizeof(glm::vec3));
 	VertexAttribute* vao = new VertexAttribute(programID, "normal", 3, GL_FLOAT, GL_FALSE);
-	this->vao->AddBuffer(*vao, *vbo);
+	this->vao->AddBuffer(vao, vbo);
+	//delete vbo, vao;
 }
 
 void Geometry::SetTexture(Texture* texture)
@@ -75,7 +77,8 @@ void Geometry::SetUVs(std::vector<glm::vec2> uvs, const GLuint programID)
 	this->uvs = uvs;
 	VertexBuffer* vbo = new VertexBuffer(&uvs[0], uvs.size() * sizeof(glm::vec2));
 	VertexAttribute* vao = new VertexAttribute(programID, "uv", 2, GL_FLOAT, GL_FALSE);
-	this->vao->AddBuffer(*vao, *vbo);
+	this->vao->AddBuffer(vao, vbo);
+	//delete vbo,vao;
 }
 
 void Geometry::Translate(glm::vec3 translation)

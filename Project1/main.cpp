@@ -23,6 +23,7 @@
 #include "Camera.h"
 #include "PrimitiveGeometry.h"
 #include "Cube.h"
+#include "JsonReader.h"
 
 
 //--------------------------------------------------------------------------------
@@ -49,13 +50,13 @@ Light* light;
 
 // ID's
 GLProgram* program;
-PrimitiveGeometry* cubeG;
-Renderer* renderer = nullptr;
-Geometry* cube = nullptr;
-Geometry* torus = nullptr;
-Mesh* cubeMesh = nullptr;
-Mesh* torusMesh = nullptr;
-Mesh* cubeGMesh = nullptr;
+
+//Meshesrenderer
+std::vector<Mesh*> meshes;
+
+//JsonReader
+JsonReader* reader = nullptr;
+
 
 // Matrices
 glm::mat4 model, view, projection;
@@ -129,10 +130,13 @@ void keyboardHandler(unsigned char key, int a, int b)
 			glm::vec3(0.0, 1.0, 0.0));
 	}
 	if (key == 'd') {
-		(*torus).Translate(glm::vec3(0.1, 0.0, 0.0));
+		for (Mesh* mesh : meshes)
+			mesh->Rotate(glm::vec3(0.0, 1.0, 0.0));
+
 	}
 	if (key == 'D') {
-		(*torus).Translate(glm::vec3(-0.1, 0.0, 0.0));
+		for (Mesh* mesh : meshes)
+			mesh->Rotate(glm::vec3(0.0, -1.0, 0.0));
 	}
 	std::cout << "Key pressed: " << key << std::endl;
 }
@@ -147,12 +151,9 @@ void Render()
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 	program->SetUniformMat4fv("projection", cam.GetProjectionMatrix(WIDTH / HEIGHT));
-	cube->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	cubeMesh->Draw(*program, cam.GetViewMatrix());
-	torus->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	torusMesh->Draw(*program, cam.GetViewMatrix());
-	cubeG->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
-	cubeGMesh->Draw(*program, cam.GetViewMatrix());
+	for (Mesh* mesh : meshes) {
+		mesh->Draw(*program, cam.GetViewMatrix());
+	}
 	light->SetUniforms(*program);
 	glutSwapBuffers();
 
@@ -236,50 +237,9 @@ void InitUniforms() {
 	program->SetUniformMat4fv("projection", cam.GetProjectionMatrix(45));
 	light->SetUniforms(*program);
 }
-void InitGeometry() {
-	vector<glm::vec3> vertices, normals;
-	vector<glm::vec2> uvs;
-	bool res;
-	res = loadOBJ("Objects/box.obj", vertices, uvs, normals);
-	cube = new Geometry(vertices, normals, uvs, program->GetID());
-
-	vector<glm::vec3> vertices2, normals2;
-	vector<glm::vec2> uvs2;
-	bool res2;
-	res2 = loadOBJ("Objects/torus.obj", vertices2, uvs2, normals2);
-
-	torus = new Geometry(vertices2, normals2, uvs2, program->GetID());
-
-
-	cubeG = new Cube();
-	cubeG->SetUp(program->GetID());
-
-}
-void InitTextures() {
-	cube->SetTexture(new Texture("Textures/Yellobrk.bmp"));
-
-	cubeG->SetTexture(new Texture("Textures/Yellobrk.bmp"));
-	torus->color = glm::vec3(0.0, 1.0, 0.0);
-}
-void InitRenderer() {
-	renderer = &Renderer::GetInstance();
-}
-
-void InitMeshes() {
-	cubeMesh = new Mesh(cube, material);
-	cubeMesh->Translate(glm::vec3(1.0, 0.0, 0.0));
-	torusMesh = new Mesh(torus, material);
-	torus->Scale(glm::vec3(2));
-	cubeGMesh = new Mesh(cubeG, material);
-	cubeGMesh->Translate(glm::vec3(-1.0, 0.0, 0.0));
-}
-
-void InitMaterial() {
-	material = new Material();
-	material->ambient = glm::vec3(0.2, 0.2, 0.1);
-	material->diffuse = glm::vec3(0.5, 0.5, 0.3);
-	material->specular = glm::vec3(1.0, 1.0, 1.0);
-	material->shininess = 1024;
+void InitJsonReader() {
+	reader = new JsonReader(program->GetID());
+	meshes = reader->ReadJson("Meshes.json");
 }
 int main(int argc, char** argv)
 {
@@ -287,12 +247,12 @@ int main(int argc, char** argv)
 	{
 		InitGlutGlew(argc, argv);
 		InitShaders();
-		InitRenderer();
 		InitMatrices();
-		InitGeometry();
-		InitTextures();
-		InitMaterial();
-		InitMeshes();
+		//InitGeometry();
+		//InitTextures();
+		//InitMaterial();
+		//InitMeshes();
+		InitJsonReader();
 		InitMaterialsLight();
 		InitUniforms();
 

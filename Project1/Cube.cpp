@@ -17,6 +17,11 @@ Cube::Cube()
 	CalculateNormals();
 }
 
+Cube::Cube(const GLuint programId) : Cube()
+{
+	this->SetUp(programId);
+}
+
 Cube::Cube(float height, float width, float depth)
 {
 	float halfHeight = height / 2.0f;

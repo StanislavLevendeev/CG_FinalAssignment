@@ -134,6 +134,7 @@
     <ClCompile Include="GLProgram.cpp" />
     <ClCompile Include="glsl.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="JsonReader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -151,10 +152,12 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="External Libraries\json.hpp" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GLProgram.h" />
     <ClInclude Include="glsl.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="JsonReader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />

@@ -5,7 +5,6 @@ class VertexAttribute
 private:
 public:
 	GLuint rendererID;
-	const GLchar* name;
 	GLint size;
 	GLenum type;
 	GLboolean normalized;

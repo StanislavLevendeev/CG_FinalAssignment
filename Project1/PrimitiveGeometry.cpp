@@ -4,6 +4,10 @@
 PrimitiveGeometry::PrimitiveGeometry() :Geometry()
 {
 }
+PrimitiveGeometry::PrimitiveGeometry(const GLuint programId) :Geometry()
+{
+	SetUp(programId);
+}
 
 PrimitiveGeometry::~PrimitiveGeometry()
 {

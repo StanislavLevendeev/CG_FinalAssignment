@@ -30,6 +30,12 @@ GLProgram::GLProgram()
 
 GLProgram::~GLProgram()
 {
+	delete uniformLocations;
+	for (unsigned int i = 0; i < shaders.size(); i++)
+	{
+		GLCall(glDetachShader(rendererID, shaders[i]->GetID()));
+		delete shaders[i];
+	}
 	GLCall(glDeleteProgram(rendererID));
 }
 

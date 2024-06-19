@@ -47,5 +47,5 @@ void Mesh::Rotate(glm::vec3 axis)
 
 void Mesh::Scale(glm::vec3 scale)
 {
-	this->Scale(scale);
+	this->geometry->Scale(scale);
 }
