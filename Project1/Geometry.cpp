@@ -1,20 +1,24 @@
 #include "Geometry.h"
 #include "Renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
+// Apply Constructor overloading
+
 Geometry::Geometry()
 	:
 	texture(nullptr),
 	model(1.0f),
 	vao(new VertexArray()),
-	vertices(), normals(), uvs()
+	vertices(), normals(), uvs(), scale(glm::vec3(1.0f))
 {
 }
 
 Geometry::Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> uvs, const GLuint program) :
 	texture(nullptr),
 	model(1.0f),
-	vao(new VertexArray())
+	vao(new VertexArray()),
+	scale(glm::vec3(1.0f))
 {
+
 	SetVertices(vertices, program);
 	SetNormals(normals, program);
 	SetUVs(uvs, program);
@@ -22,6 +26,7 @@ Geometry::Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> norma
 
 Geometry::~Geometry()
 {
+	if (texture != nullptr) delete texture;
 	delete vao;
 
 }
@@ -34,7 +39,7 @@ void Geometry::Draw(GLProgram& program, const glm::mat4 view) const
 	}
 	program.SetUniform1i("useTexture", HasTexture() ? 1 : 0);
 
-	glm::mat4 mv = view * model;
+	glm::mat4 mv = view * GetModelMatrix();
 	Renderer::GetInstance().Draw(*vao, program, vertices.size(), mv);
 	if (texture != nullptr)	texture->Unbind();
 }
@@ -75,17 +80,28 @@ void Geometry::SetUVs(std::vector<glm::vec2> uvs, const GLuint programID)
 
 void Geometry::Translate(glm::vec3 translation)
 {
-	model = glm::translate(model, translation);
+	position += translation;
+}
+
+void Geometry::Rotate(glm::vec3 axis)
+{
+	rotation += axis;
 }
 
 void Geometry::Rotate(float angle, glm::vec3 axis)
 {
-	model = glm::rotate(model, angle, axis);
+	axis = glm::normalize(axis);
+	if (axis.x != 0.0f)
+		rotation.x += angle * axis.x;
+	else if (axis.y != 0.0f)
+		rotation.y += angle * axis.y;
+	else if (axis.z != 0.0f)
+		rotation.z += angle * axis.z;
 }
 
 void Geometry::Scale(glm::vec3 scale)
 {
-	model = glm::scale(model, scale);
+	this->scale = scale;
 }
 
 bool Geometry::HasTexture() const
@@ -96,7 +112,18 @@ bool Geometry::HasTexture() const
 
 glm::mat4 Geometry::GetModelMatrix() const
 {
-	return model;
+	glm::mat4 newModel = glm::mat4(1.0f); ;
+	newModel = glm::translate(newModel, this->position);
+
+	// Apply rotations in the correct order
+	newModel = glm::rotate(newModel, rotation.z, glm::vec3(0, 0, 1));
+	newModel = glm::rotate(newModel, rotation.y, glm::vec3(0, 1, 0));
+	newModel = glm::rotate(newModel, rotation.x, glm::vec3(1, 0, 0));
+
+	// Apply scaling last
+	newModel = glm::scale(newModel, scale);
+
+	return newModel;
 }
 
 void Geometry::CalculateDimensions()

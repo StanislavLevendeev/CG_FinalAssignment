@@ -4,12 +4,14 @@
 #include "VertexArray.h"
 #include "GLProgram.h"
 #include "Texture.h"
+#include "Transformable.h"
 struct Dimensions {
 	float width;
 	float height;
 	float depth;
 };
-class Geometry
+
+class Geometry : public Transformable
 {
 public:
 	Geometry();
@@ -24,10 +26,14 @@ public:
 	void Rotate(float angle, glm::vec3 axis);
 	void Scale(glm::vec3 scale);
 	bool HasTexture() const;
-	VertexArray* vao;
 	glm::mat4 GetModelMatrix() const;
+	glm::vec3  rotation;
+	glm::vec3  position;
+	glm::vec3  scale;
+	VertexArray* vao;
 	Texture* texture;
 	glm::vec3 color;
+	void Rotate(glm::vec3 axis);
 protected:
 	void CalculateDimensions();
 	glm::mat4 model;

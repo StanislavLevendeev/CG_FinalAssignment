@@ -21,7 +21,8 @@
 #include "Mesh.h"
 #include "Light.h"
 #include "Camera.h"
-
+#include "PrimitiveGeometry.h"
+#include "Cube.h"
 
 
 //--------------------------------------------------------------------------------
@@ -48,11 +49,13 @@ Light* light;
 
 // ID's
 GLProgram* program;
+PrimitiveGeometry* cubeG;
 Renderer* renderer = nullptr;
 Geometry* cube = nullptr;
 Geometry* torus = nullptr;
 Mesh* cubeMesh = nullptr;
 Mesh* torusMesh = nullptr;
+Mesh* cubeGMesh = nullptr;
 
 // Matrices
 glm::mat4 model, view, projection;
@@ -60,7 +63,7 @@ glm::mat4 model, view, projection;
 Camera cam;
 
 Material* material = nullptr;
-
+int xS = 0, yS = 0;
 
 //--------------------------------------------------------------------------------
 // Mouse poesition listener
@@ -68,7 +71,25 @@ Material* material = nullptr;
 
 void mousePositionListener(int x, int y) {
 	std::cout << "Mouse position: " << x << " " << y << std::endl;
-	cam.ProcessMouseMovement(x, y);
+	if (xS != 0 && yS != 0)
+		cam.ProcessMouseMovement(x - xS, y - yS);
+	xS = x;
+	yS = y;
+}
+void mouseWheel(int button, int dir, int x, int y)
+{
+	cam.ProcessMouseScroll(dir);
+	std::cout << "Mouse wheel: " << dir << std::endl;
+	std::cout << "Button: " << button << " " << x << " " << y << std::endl;
+	if (dir > 0)
+	{
+	}
+	else
+	{
+		// Zoom out
+	}
+
+	return;
 }
 
 //--------------------------------------------------------------------------------
@@ -125,11 +146,14 @@ void Render()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
+	program->SetUniformMat4fv("projection", cam.GetProjectionMatrix(WIDTH / HEIGHT));
 	cube->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
 	cubeMesh->Draw(*program, cam.GetViewMatrix());
 	torus->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
 	torusMesh->Draw(*program, cam.GetViewMatrix());
-
+	cubeG->Rotate(0.01f, glm::vec3(0.5f, 1.0f, 0.2f));
+	cubeGMesh->Draw(*program, cam.GetViewMatrix());
+	light->SetUniforms(*program);
 	glutSwapBuffers();
 
 }
@@ -162,7 +186,7 @@ void InitGlutGlew(int argc, char** argv)
 	glutKeyboardFunc(keyboardHandler);
 	glutTimerFunc(DELTA_TIME, Render, 0);
 	glutPassiveMotionFunc(mousePositionListener);
-
+	glutMouseWheelFunc(mouseWheel);
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -209,7 +233,7 @@ void InitMaterialsLight()
 
 }
 void InitUniforms() {
-	program->SetUniformMat4fv("projection", projection);
+	program->SetUniformMat4fv("projection", cam.GetProjectionMatrix(45));
 	light->SetUniforms(*program);
 }
 void InitGeometry() {
@@ -225,10 +249,16 @@ void InitGeometry() {
 	res2 = loadOBJ("Objects/torus.obj", vertices2, uvs2, normals2);
 
 	torus = new Geometry(vertices2, normals2, uvs2, program->GetID());
-	(*torus).Translate(glm::vec3(2.0, 0.0, 0.0));
+
+
+	cubeG = new Cube();
+	cubeG->SetUp(program->GetID());
+
 }
 void InitTextures() {
 	cube->SetTexture(new Texture("Textures/Yellobrk.bmp"));
+
+	cubeG->SetTexture(new Texture("Textures/Yellobrk.bmp"));
 	torus->color = glm::vec3(0.0, 1.0, 0.0);
 }
 void InitRenderer() {
@@ -237,7 +267,10 @@ void InitRenderer() {
 
 void InitMeshes() {
 	cubeMesh = new Mesh(cube, material);
+	//cubeMesh->Translate(glm::vec3(0.0, 1.0, 0.0));
 	torusMesh = new Mesh(torus, material);
+	cubeGMesh = new Mesh(cubeG, material);
+	//cubeGMesh->Translate(glm::vec3(0.0, -1.0, 0.0));
 }
 
 void InitMaterial() {
@@ -249,24 +282,30 @@ void InitMaterial() {
 }
 int main(int argc, char** argv)
 {
+	try
+	{
+		InitGlutGlew(argc, argv);
+		InitShaders();
+		InitRenderer();
+		InitMatrices();
+		InitGeometry();
+		InitTextures();
+		InitMaterial();
+		InitMeshes();
+		InitMaterialsLight();
+		InitUniforms();
 
-	InitGlutGlew(argc, argv);
-	InitShaders();
-	InitRenderer();
-	InitMatrices();
-	InitGeometry();
-	InitTextures();
-	InitMaterial();
-	InitMeshes();
-	InitMaterialsLight();
-	InitUniforms();
+		// Hide console window
+		HWND hWnd = GetConsoleWindow();
+		ShowWindow(hWnd, SW_HIDE);
 
-	// Hide console window
-	HWND hWnd = GetConsoleWindow();
-	ShowWindow(hWnd, SW_HIDE);
-
-	// Main loop
-	glutMainLoop();
-
+		// Main loop
+		glutMainLoop();
+	}
+	catch (const std::exception&)
+	{
+		std::cerr << "An error occured" << std::endl;
+		return 1;
+	}
 	return 0;
 }

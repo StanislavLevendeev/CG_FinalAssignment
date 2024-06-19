@@ -34,3 +34,18 @@ void Mesh::SetMaterial(Material* material)
 {
 	this->material = material;
 }
+
+void Mesh::Translate(glm::vec3 translation)
+{
+	this->geometry->Translate(translation);
+}
+
+void Mesh::Rotate(glm::vec3 axis)
+{
+	this->geometry->Rotate(axis);
+}
+
+void Mesh::Scale(glm::vec3 scale)
+{
+	this->Scale(scale);
+}
