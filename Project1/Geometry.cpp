@@ -93,9 +93,9 @@ void Geometry::Rotate(float angle, glm::vec3 axis)
 	axis = glm::normalize(axis);
 	if (axis.x != 0.0f)
 		rotation.x += angle * axis.x;
-	else if (axis.y != 0.0f)
+	if (axis.y != 0.0f)
 		rotation.y += angle * axis.y;
-	else if (axis.z != 0.0f)
+	if (axis.z != 0.0f)
 		rotation.z += angle * axis.z;
 }
 

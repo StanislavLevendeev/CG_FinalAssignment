@@ -267,10 +267,11 @@ void InitRenderer() {
 
 void InitMeshes() {
 	cubeMesh = new Mesh(cube, material);
-	//cubeMesh->Translate(glm::vec3(0.0, 1.0, 0.0));
+	cubeMesh->Translate(glm::vec3(1.0, 0.0, 0.0));
 	torusMesh = new Mesh(torus, material);
+	torus->Scale(glm::vec3(2));
 	cubeGMesh = new Mesh(cubeG, material);
-	//cubeGMesh->Translate(glm::vec3(0.0, -1.0, 0.0));
+	cubeGMesh->Translate(glm::vec3(-1.0, 0.0, 0.0));
 }
 
 void InitMaterial() {
