@@ -18,6 +18,11 @@ const float SENSITIVITY = 0.5f;
 const float ZOOM = 45.0f;
 
 
+enum CameraMode {
+	Walk,
+	Drone
+};
+
 class Camera
 {
 public:
@@ -32,15 +37,18 @@ public:
 	void SetUniforms(GLProgram&, float);
 private:
 	void UpdateCameraVectors();
-
+	void ToggleMode();
 	glm::mat4 projection;
-	glm::vec3 position;
+	glm::vec3 position, lastPos;
 	glm::vec3 front;
 	glm::vec3 up;
 	glm::vec3 right;
 	glm::vec3 worldUp;
-	float yaw;
-	float pitch;
+
+	CameraMode mode;
+
+	float yaw, lastYaw;
+	float pitch, lastPitch;
 	float movementSpeed;
 	float mouseSensitivity;
 	float zoom;

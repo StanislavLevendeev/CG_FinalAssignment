@@ -11,15 +11,20 @@ glm::mat4 Camera::GetViewMatrix() const
 	return glm::lookAt(position, position + front, up);
 }
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-	: front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVITY), zoom(ZOOM)
+	:front(glm::vec3(0.0f, 0.0f, -1.0f)),
+	movementSpeed(SPEED),
+	mouseSensitivity(SENSITIVITY),
+	zoom(ZOOM),
+	lastX(0),
+	lastY(0),
+	mode(CameraMode::Walk)
+
 {
 	this->position = position;
 	worldUp = up;
 	this->yaw = yaw;
 	this->pitch = pitch;
 	UpdateCameraVectors();
-	lastX = 0;
-	lastY = 0;
 }
 void Camera::Move(Camera_Movement direction, float deltaTime) {
 	float velocity = movementSpeed * deltaTime;
@@ -68,20 +73,25 @@ void Camera::ProcessMouseScroll(float yoffset)
 		zoom = 45.0f;
 }
 void Camera::ProcessKeyPressed(unsigned char key) {
-	if (key == 'W') {
+	if (key == 'W')
 		Move(FORWARD, movementSpeed);
-	}
-	if (key == 'S') {
+
+	if (key == 'S')
 		Move(BACKWARD, movementSpeed);
-	}
-	if (key == 'A') {
+
+	if (key == 'A')
 		Move(LEFT, movementSpeed);
-	}
-	if (key == 'D') {
+
+	if (key == 'D')
 		Move(RIGHT, movementSpeed);
-	}
+
+	if (key == 'V')
+		ToggleMode();
+
 	UpdateCameraVectors();
 }
+
+
 glm::mat4 Camera::GetProjectionMatrix(float aspectRatio) const {
 	return glm::perspective(glm::radians(zoom), aspectRatio, 0.1f, 100.0f);
 }
@@ -89,15 +99,38 @@ void  Camera::SetUniforms(GLProgram& program, float aspectRatio) {
 	program.SetUniformMat4fv("projection", GetProjectionMatrix(aspectRatio));
 }
 void Camera::UpdateCameraVectors() {
-	{
-		// calculate the new Front vector
-		glm::vec3 front;
-		front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		front.y = sin(glm::radians(pitch));
-		front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-		this->front = glm::normalize(front);
-		// also re-calculate the Right and Up vector
-		right = glm::normalize(glm::cross(this->front, worldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-		up = glm::normalize(glm::cross(right, this->front));
+	if (mode == CameraMode::Walk) {
+		// Set the position to a fixed height of 1.8 on the y-axis
+		position.y = 1.8f;
 	}
-};
+	// calculate the new Front vector based on the yaw and pitch
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	this->front = glm::normalize(front);
+
+
+	// also re-calculate the Right and Up vector
+	right = glm::normalize(glm::cross(this->front, worldUp));
+	up = glm::normalize(glm::cross(right, this->front));
+}
+
+void Camera::ToggleMode()
+{
+	if (mode == CameraMode::Walk) {
+		mode = CameraMode::Drone;
+		lastPos = position;
+		lastYaw = yaw;
+		lastPitch = pitch;
+		position = glm::vec3(0.0f, 0.0f, 0.0f);
+		yaw = 0.0f;
+		pitch = 0.0f;
+	}
+	else if (mode == CameraMode::Drone) {
+		mode = CameraMode::Walk;
+		yaw = lastYaw;
+		pitch = lastPitch;
+		position = lastPos;
+	}
+}
