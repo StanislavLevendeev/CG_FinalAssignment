@@ -180,6 +180,8 @@ int main(int argc, char** argv)
 
 	// Main loop
 	glutMainLoop();
-
+	for (Mesh* mesh : meshes)
+		delete mesh;
+	delete program, reader, light;
 	return 0;
 }

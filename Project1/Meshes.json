@@ -1,51 +1,5 @@
 [
-  {
-    "geometry": {
-      "type": "cube",
-      "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
-      }
-    },
-    "material": {
-      "ambient": [0.2, 0.2, 0.1],
-      "diffuse": [0.5, 0.5, 0.3],
-      "specular": [1.0, 1.0, 1.0],
-      "shininess": 1024
-    },
-    "position": [-1, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "file": "Objects/torus.obj",
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.2, 0.2, 0.1],
-      "diffuse": [0.5, 0.5, 0.3],
-      "specular": [1.0, 1.0, 1.0],
-      "shininess": 1024
-    },
-    "position": [1, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "type": "cube",
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.2, 0.2, 0.1],
-      "diffuse": [0.5, 0.5, 0.3],
-      "specular": [1.0, 1.0, 1.0],
-      "shininess": 1024
-    },
-    "position": [1, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [0.5, 0.5, 0.5]
-  },
+ 
   {
     "geometry": {
       "file": "Objects/OfficeTable.obj",
