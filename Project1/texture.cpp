@@ -5,8 +5,8 @@
 #include <GL/glew.h>
 #include "Texture.h"
 #include "Renderer.h"
-Texture::Texture(const std::string& path)
-	:rendererID(0), filePath(path)
+Texture::Texture(const std::string& path, float scaleFactor)
+	:rendererID(0), filePath(path), scaleFactor(scaleFactor)
 {
 	//flip the image
 	GLCall(rendererID = loadBMP(path.c_str()));
@@ -19,10 +19,11 @@ Texture::~Texture()
 }
 
 
-void Texture::Bind(unsigned int slot) const
+void Texture::Bind(GLProgram& program, unsigned int slot) const
 {
 	GLCall(glActiveTexture(GL_TEXTURE0 + slot));
 	GLCall(glBindTexture(GL_TEXTURE_2D, rendererID));
+	program.SetUniform1f("textureScale", scaleFactor);
 }
 
 void Texture::Unbind() const

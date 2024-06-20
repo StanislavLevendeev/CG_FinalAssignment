@@ -5,6 +5,7 @@ class IndexBuffer
 private:
 	GLuint rendererID;
 	unsigned int count;
+	const GLuint* data;
 public:
 	IndexBuffer(const GLuint* data, unsigned int count);
 	~IndexBuffer();

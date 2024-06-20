@@ -161,7 +161,7 @@ void InitShaders()
 
 void InitMaterialsLight()
 {
-	light = new Light(glm::vec3(4.0, 4.0, 4.0));
+	light = new Light(glm::vec3(0.0, 4.0, 0.0));
 }
 
 void InitJsonReader() {

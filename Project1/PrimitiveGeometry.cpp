@@ -17,7 +17,7 @@ PrimitiveGeometry::~PrimitiveGeometry()
 
 void PrimitiveGeometry::Draw(GLProgram& program, const glm::mat4 view) const
 {
-	if (texture != nullptr) texture->Bind();
+	if (texture != nullptr) texture->Bind(program);
 	else {
 		program.SetUniform3fv("objectColor", color);
 	}
@@ -34,7 +34,8 @@ void PrimitiveGeometry::SetUp(const GLuint programID)
 	this->SetNormals(normals, programID);
 	this->SetUVs(uvs, programID);
 	this->vao->Bind();
-	ibo = new IndexBuffer(triangles, 36);
+	if (ibo == nullptr)
+		ibo = new IndexBuffer(triangles, 36);
 	ibo->Bind();
 	this->vao->Unbind();
 }

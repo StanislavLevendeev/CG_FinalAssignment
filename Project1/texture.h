@@ -1,6 +1,8 @@
 #include <string>
+#include "GLProgram.h"
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
+
 
 // Load a .BMP file using our custom loader
 GLuint loadBMP(const char* imagepath);
@@ -17,11 +19,12 @@ class Texture
 {
 private:
 	GLuint rendererID;
+	float scaleFactor;
 	std::string filePath;
 public:
-	Texture(const std::string& path);
+	Texture(const std::string& path, float scaleFactor = 1);
 	~Texture();
-	void Bind(unsigned int slot = 0) const;
+	void Bind(GLProgram& program, unsigned int slot = 0) const;
 	void Unbind() const;
 	inline GLuint GetID() const { return rendererID; }
 	inline std::string GetPath() const { return filePath; }

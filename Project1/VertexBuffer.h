@@ -6,6 +6,7 @@
 class VertexBuffer
 {
 private:
+	const void* data;
 public:
 	GLuint rendererID;
 	VertexBuffer(const void* data, GLuint size);

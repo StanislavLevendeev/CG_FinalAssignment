@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 #include "Renderer.h"
-VertexBuffer::VertexBuffer(const void* data, GLuint size)
+VertexBuffer::VertexBuffer(const void* data, GLuint size) :data(data)
 {
 	GLCall(glGenBuffers(1, &this->rendererID));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, this->rendererID));
@@ -11,6 +11,7 @@ VertexBuffer::VertexBuffer(const void* data, GLuint size)
 VertexBuffer::~VertexBuffer()
 {
 	GLCall(glDeleteBuffers(1, &rendererID));
+	delete this->data;
 }
 
 void VertexBuffer::Bind() const

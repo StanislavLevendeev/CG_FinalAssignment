@@ -26,14 +26,14 @@ Geometry::Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> norma
 
 Geometry::~Geometry()
 {
-	if (texture != nullptr) delete texture;
+	delete texture;
 	delete vao;
 
 }
 
 void Geometry::Draw(GLProgram& program, const glm::mat4 view) const
 {
-	if (texture != nullptr) texture->Bind();
+	if (texture != nullptr) texture->Bind(program);
 	else {
 		program.SetUniform3fv("objectColor", color);
 	}

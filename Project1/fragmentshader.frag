@@ -7,7 +7,7 @@ struct Material {
     vec3 specular;
     float shininess;
 };
-uniform Material material;
+
 // Inputs from vertexshader
 in VS_OUT
 {
@@ -22,6 +22,8 @@ in vec2 UV;
 uniform sampler2D texsampler;
 uniform bool useTexture;
 uniform vec3 objectColor;
+uniform Material material;
+uniform float textureScale;
 void main()
 {
     // Normalize the incoming N, L and V vectors
@@ -38,7 +40,9 @@ void main()
 
     if (useTexture) {
         // Use texture color
-        diffuse = max(dot(N, L), 0.0) * texture(texsampler, UV).rgb;
+        vec2 scaledUV = UV * textureScale;
+        diffuse = abs(dot(N, L)) * texture(texsampler, scaledUV).rgb;
+
     } else {
         // Use object color
         diffuse = max(dot(N, L), 0.0) * objectColor;
