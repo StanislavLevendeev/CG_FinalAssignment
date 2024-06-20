@@ -11,7 +11,7 @@ public:
 	JsonReader(unsigned int);
 private:
 	unsigned int programId;
-	Mesh* ParseMesh(const json meshJson);
-	Material* ParseMaterial(const json materialJson);
-	Geometry* ParseGeometry(const json geometryJson);
+	Mesh* ParseMesh(const json& meshJson);
+	Material* ParseMaterial(const json& materialJson);
+	Geometry* ParseGeometry(const json& geometryJson);
 };
