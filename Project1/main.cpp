@@ -57,10 +57,6 @@ std::vector<Mesh*> meshes;
 //JsonReader
 JsonReader* reader = nullptr;
 
-
-// Matrices
-glm::mat4 model, view, projection;
-
 Camera cam;
 
 Material* material = nullptr;
@@ -72,24 +68,11 @@ int xS = 0, yS = 0;
 
 void mousePositionListener(int x, int y) {
 	std::cout << "Mouse position: " << x << " " << y << std::endl;
-	if (xS != 0 && yS != 0)
-		cam.ProcessMouseMovement(x - xS, y - yS);
-	xS = x;
-	yS = y;
+	cam.ProcessMouseMovement(x, y);
 }
 void mouseWheel(int button, int dir, int x, int y)
 {
 	cam.ProcessMouseScroll(dir);
-	std::cout << "Mouse wheel: " << dir << std::endl;
-	std::cout << "Button: " << button << " " << x << " " << y << std::endl;
-	if (dir > 0)
-	{
-	}
-	else
-	{
-		// Zoom out
-	}
-
 	return;
 }
 
@@ -101,43 +84,7 @@ void keyboardHandler(unsigned char key, int a, int b)
 {
 	if (key == 27)
 		glutExit();
-	if (key == 'I') {
-		cam.Move(FORWARD, 1);
-		view = cam.GetViewMatrix();
-	}
-	if (key == 'K') {
-		cam.Move(BACKWARD, 1);
-		view = cam.GetViewMatrix();
-	}
-	if (key == 'L') {
-		cam.Move(RIGHT, 1);
-		view = cam.GetViewMatrix();
-	}
-	if (key == 'J') {
-		cam.Move(LEFT, 1);
-		view = cam.GetViewMatrix();
-	}
-	if (key == 'W') {
-		view = glm::lookAt(
-			glm::vec3(0.0, 2.0, 6.0),
-			glm::vec3(0.0, 0.5, 0.0),
-			glm::vec3(0.0, 1.0, 0.0));
-	}
-	if (key == 'w') {
-		view = glm::lookAt(
-			glm::vec3(0.0, 2.0, 2.0),
-			glm::vec3(0.0, 0.5, 0.0),
-			glm::vec3(0.0, 1.0, 0.0));
-	}
-	if (key == 'd') {
-		for (Mesh* mesh : meshes)
-			mesh->Rotate(glm::vec3(0.0, 1.0, 0.0));
-
-	}
-	if (key == 'D') {
-		for (Mesh* mesh : meshes)
-			mesh->Rotate(glm::vec3(0.0, -1.0, 0.0));
-	}
+	cam.ProcessKeyPressed(key);
 	std::cout << "Key pressed: " << key << std::endl;
 }
 
@@ -150,11 +97,14 @@ void Render()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-	program->SetUniformMat4fv("projection", cam.GetProjectionMatrix(WIDTH / HEIGHT));
-	for (Mesh* mesh : meshes) {
-		mesh->Draw(*program, cam.GetViewMatrix());
-	}
+	cam.SetUniforms(*program, WIDTH / HEIGHT);
+
 	light->SetUniforms(*program);
+
+	for (Mesh* mesh : meshes)
+		mesh->Draw(*program, cam.GetViewMatrix());
+
+
 	glutSwapBuffers();
 
 }
@@ -208,22 +158,6 @@ void InitShaders()
 	program = new GLProgram(shaders, 2);
 }
 
-
-//------------------------------------------------------------
-// void InitMatrices()
-//------------------------------------------------------------
-
-void InitMatrices()
-{
-	model = glm::mat4();
-	view = cam.GetViewMatrix();
-
-	projection = glm::perspective(
-		glm::radians(45.0f),
-		1.0f * WIDTH / HEIGHT, 0.1f,
-		20.0f);
-}
-
 //------------------------------------------------------------
 // void InitMaterialsLight()
 //------------------------------------------------------------
@@ -231,42 +165,24 @@ void InitMatrices()
 void InitMaterialsLight()
 {
 	light = new Light(glm::vec3(4.0, 4.0, 4.0));
+}
 
-}
-void InitUniforms() {
-	program->SetUniformMat4fv("projection", cam.GetProjectionMatrix(45));
-	light->SetUniforms(*program);
-}
 void InitJsonReader() {
 	reader = new JsonReader(program->GetID());
 	meshes = reader->ReadJson("Meshes.json");
 }
 int main(int argc, char** argv)
 {
-	try
-	{
-		InitGlutGlew(argc, argv);
-		InitShaders();
-		InitMatrices();
-		//InitGeometry();
-		//InitTextures();
-		//InitMaterial();
-		//InitMeshes();
-		InitJsonReader();
-		InitMaterialsLight();
-		InitUniforms();
+	InitGlutGlew(argc, argv);
+	InitShaders();
+	InitJsonReader();
+	InitMaterialsLight();
 
-		// Hide console window
-		HWND hWnd = GetConsoleWindow();
-		ShowWindow(hWnd, SW_HIDE);
+	HWND hWnd = GetConsoleWindow();
+	ShowWindow(hWnd, SW_HIDE);
 
-		// Main loop
-		glutMainLoop();
-	}
-	catch (const std::exception&)
-	{
-		std::cerr << "An error occured" << std::endl;
-		return 1;
-	}
+	// Main loop
+	glutMainLoop();
+
 	return 0;
 }

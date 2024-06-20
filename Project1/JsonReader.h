@@ -13,6 +13,5 @@ private:
 	unsigned int programId;
 	Mesh* ParseMesh(const json meshJson);
 	Material* ParseMaterial(const json materialJson);
-	Texture* ParseTexture(const json textureJson);
 	Geometry* ParseGeometry(const json geometryJson);
 };

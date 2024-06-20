@@ -16,7 +16,7 @@ VertexArray::~VertexArray()
 		delete std::get<0>(i);
 		delete std::get<1>(i);
 	}
-	GLCall(glDeleteBuffers(1, &rendererID));
+	GLCall(glDeleteVertexArrays(1, &rendererID));
 }
 
 void VertexArray::AddBuffer(VertexAttribute* vertexAttrib, VertexBuffer* vertexBuffer)
