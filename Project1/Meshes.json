@@ -21,8 +21,8 @@
     "geometry": {
       "file": "Objects/Room.obj",
       "texture": {
-        "fileName": "Textures/wall.bmp",
-        "scaleFactor": 100
+        "fileName": "Textures/wall2.bmp",
+        "scaleFactor": 20
       }
     },
     "material": {

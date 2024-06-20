@@ -16,6 +16,7 @@ in VS_OUT
     vec3 V;
 } fs_in;
 
+
 // Output color
 out vec4 fragColor;
 in vec2 UV;
@@ -33,7 +34,8 @@ void main()
 
     // Calculate R locally
     vec3 R = reflect(-L, N);
-
+    // White color
+    vec3 whiteColor = vec3(1.0, 1.0, 1.0);
     // Compute the diffuse and specular components for each fragment
     // vec3 diffuse = max(dot(N, L), 0.0) * material.diffuse;
     vec3 diffuse;
@@ -47,10 +49,11 @@ void main()
         // Use object color
         diffuse = max(dot(N, L), 0.0) * objectColor;
     }
-
+    // Use white color for ambient as well
+    vec3 ambient = material.ambient * whiteColor;
     vec3 specular = pow(max(dot(R, V), 0.0), material.shininess) * material.specular;
 
     // Write final color to the framebuffer
 
-    fragColor = vec4(material.ambient + diffuse + specular, 1.0);
+    fragColor = vec4(ambient + diffuse + specular, 1.0);
 }
