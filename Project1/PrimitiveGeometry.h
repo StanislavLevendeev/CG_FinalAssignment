@@ -4,15 +4,16 @@
 class PrimitiveGeometry : public Geometry
 {
 private:
-	IndexBuffer* ibo;
 public:
 	PrimitiveGeometry();
-
-	PrimitiveGeometry(const GLuint programId);
 	~PrimitiveGeometry();
 	void Draw(GLProgram& program, const glm::mat4 view) const override;
 	void SetUp(const GLuint programID);
+	int trianglesSize;
 	GLuint* triangles;
+	std::vector<glm::vec3> verticesShape;
+	std::vector<glm::vec3> normalsShape;
+	std::vector<glm::vec2> uvsShape;
 protected:
 	void CalculateNormals();
 	virtual void CreateTriangles() = 0;

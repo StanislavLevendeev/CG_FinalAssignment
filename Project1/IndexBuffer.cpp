@@ -22,3 +22,11 @@ void IndexBuffer::Unbind() const
 {
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
+
+void IndexBuffer::Update(const GLuint* data, unsigned int count)
+{
+	this->data = data;
+	this->count = count;
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->rendererID));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_STATIC_DRAW));
+}

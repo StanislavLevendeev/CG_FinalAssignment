@@ -7,8 +7,6 @@ public:
 	Cube();
 	Cube(const GLuint);
 	Cube(float height, float width, float depth);
-
-
 	// Inherited via PrimitiveGeometry
 	void CreateTriangles() override;
 	void CreateUVs() override;

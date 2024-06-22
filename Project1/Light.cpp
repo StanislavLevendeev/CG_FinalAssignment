@@ -7,7 +7,6 @@ Light::Light(const glm::vec3 position)
 
 Light::~Light()
 {
-	delete this;
 }
 
 void Light::SetUniforms(GLProgram& program) const

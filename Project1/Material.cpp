@@ -11,7 +11,6 @@ Material::Material()
 
 Material::~Material()
 {
-	delete this;
 }
 
 void Material::SetUniforms(GLProgram& program) const

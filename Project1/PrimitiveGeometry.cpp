@@ -1,18 +1,13 @@
 #include "PrimitiveGeometry.h"
 #include "Renderer.h"
 
-PrimitiveGeometry::PrimitiveGeometry() :Geometry()
+PrimitiveGeometry::PrimitiveGeometry() : Geometry()
 {
-}
-PrimitiveGeometry::PrimitiveGeometry(const GLuint programId) :Geometry()
-{
-	SetUp(programId);
 }
 
 PrimitiveGeometry::~PrimitiveGeometry()
 {
-	delete ibo;
-	delete triangles;
+	delete[] triangles;
 }
 
 void PrimitiveGeometry::Draw(GLProgram& program, const glm::mat4 view) const
@@ -24,39 +19,81 @@ void PrimitiveGeometry::Draw(GLProgram& program, const glm::mat4 view) const
 	program.SetUniform1i("useTexture", HasTexture() ? 1 : 0);
 
 	glm::mat4 mv = view * GetModelMatrix();
-	Renderer::GetInstance().Draw(*vao, *ibo, program, mv);
+	Renderer::GetInstance().Draw(*vao, program, vertices.size(), mv);
 	if (texture != nullptr)	texture->Unbind();
 }
 
 void PrimitiveGeometry::SetUp(const GLuint programID)
-{
+{//based on triangles generate array of vertices normals and uvs
+	std::vector<glm::vec3> vertices = {
+		// Front face
+		verticesShape[0], verticesShape[1], verticesShape[2],
+		verticesShape[0], verticesShape[2], verticesShape[3],
+
+		// Right face
+		verticesShape[1], verticesShape[5], verticesShape[6],
+		verticesShape[1], verticesShape[6], verticesShape[2],
+
+		// Back face
+		verticesShape[5], verticesShape[4], verticesShape[7],
+		verticesShape[5], verticesShape[7], verticesShape[6],
+
+		// Left face
+		verticesShape[4], verticesShape[0], verticesShape[3],
+		verticesShape[4], verticesShape[3], verticesShape[7],
+
+		// Top face
+		verticesShape[3], verticesShape[2], verticesShape[6],
+		verticesShape[3], verticesShape[6], verticesShape[7],
+
+		// Bottom face
+		verticesShape[4], verticesShape[5], verticesShape[1],
+		verticesShape[4], verticesShape[1], verticesShape[0]
+	};
+
+	std::vector<glm::vec3> normals;
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			normals.push_back(normalsShape[i]);
+		}
+	}
+	std::vector<glm::vec2> uvs;
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			uvs.push_back(uvsShape[j]);
+		}
+	}
 	this->SetVertices(vertices, programID);
 	this->SetNormals(normals, programID);
 	this->SetUVs(uvs, programID);
 	this->vao->Bind();
-	if (ibo == nullptr)
-		ibo = new IndexBuffer(triangles, 36);
-	ibo->Bind();
 	this->vao->Unbind();
 }
 
 void PrimitiveGeometry::CalculateNormals()
 {
-	normals.resize(vertices.size(), glm::vec3(0.0f));
+	//calculate normals for each vertex
+	normalsShape.resize(verticesShape.size());
 
-	for (size_t i = 0; i < 36; i += 3) {
-		glm::vec3 v0 = vertices[triangles[i]];
-		glm::vec3 v1 = vertices[triangles[i + 1]];
-		glm::vec3 v2 = vertices[triangles[i + 2]];
-		glm::vec3 normal = glm::normalize(glm::cross(v1 - v0, v2 - v0));
-		normals[triangles[i]] += normal;
-		normals[triangles[i + 1]] += normal;
-		normals[triangles[i + 2]] += normal;
+	for (size_t i = 0; i < trianglesSize; i += 3) {
+		glm::vec3 v1 = verticesShape[triangles[i]];
+		glm::vec3 v2 = verticesShape[triangles[i + 1]];
+		glm::vec3 v3 = verticesShape[triangles[i + 2]];
+
+		glm::vec3 normal = glm::cross(v2 - v1, v3 - v1);
+
+		normalsShape[triangles[i]] += normal;
+		normalsShape[triangles[i + 1]] += normal;
+		normalsShape[triangles[i + 2]] += normal;
 	}
 
 	// Normalize normals
-	for (size_t i = 0; i < normals.size(); ++i) {
-		normals[i] = glm::normalize(normals[i]);
+	for (size_t i = 0; i < normalsShape.size(); ++i) {
+		normalsShape[i] = glm::normalize(normalsShape[i]);
 	}
 }
 

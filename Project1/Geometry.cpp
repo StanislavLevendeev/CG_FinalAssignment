@@ -8,7 +8,12 @@ Geometry::Geometry()
 	texture(nullptr),
 	model(1.0f),
 	vao(new VertexArray()),
-	vertices(), normals(), uvs(), scale(glm::vec3(1.0f))
+	vertices(),
+	normals(),
+	uvs(),
+	scale(glm::vec3(1.0f)),
+	color(glm::vec3(1.0f)),
+	dimensions({ 0.0f, 0.0f, 0.0f })
 {
 }
 

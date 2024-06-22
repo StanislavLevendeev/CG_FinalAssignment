@@ -2,7 +2,6 @@
 
 Camera::~Camera()
 {
-	delete this;
 }
 
 glm::mat4 Camera::GetViewMatrix() const

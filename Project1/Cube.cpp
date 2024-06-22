@@ -2,19 +2,26 @@
 
 Cube::Cube()
 {
-	vertices = {
-		glm::vec3(-1.0, -1.0, 1.0),
-		glm::vec3(1.0, -1.0, 1.0),
-		glm::vec3(1.0, 1.0, 1.0),
-		glm::vec3(-1.0, 1.0, 1.0),
-		glm::vec3(-1.0, -1.0, -1.0),
-		glm::vec3(1.0, -1.0, -1.0),
-		glm::vec3(1.0, 1.0, -1.0),
-		glm::vec3(-1.0, 1.0, -1.0)
+	verticesShape = {
+		glm::vec3(-1.0f, -1.0f, 1.0f), // 0: Front bottom left
+		glm::vec3(1.0f, -1.0f, 1.0f), // 1: Front bottom right
+		glm::vec3(1.0f, 1.0f, 1.0f), // 2: Front top right
+		glm::vec3(-1.0f, 1.0f, 1.0f), // 3: Front top left
+		glm::vec3(-1.0f, -1.0f, -1.0f), // 4: Back bottom left
+		glm::vec3(1.0f, -1.0f, -1.0f), // 5: Back bottom right
+		glm::vec3(1.0f, 1.0f, -1.0f), // 6: Back top right
+		glm::vec3(-1.0f, 1.0f, -1.0f) // 7: Back top left
 	};
 	CreateTriangles();
 	CreateUVs();
-	CalculateNormals();
+	normalsShape = {
+		glm::vec3(0.0f, 0.0f, 1.0f), // 0: Front
+		glm::vec3(0.0f, 0.0f, -1.0f), // 1: Back
+		glm::vec3(1.0f, 0.0f, 0.0f), // 2: Right
+		glm::vec3(-1.0f, 0.0f, 0.0f), // 3: Left
+		glm::vec3(0.0f, 1.0f, 0.0f), // 4: Top
+		glm::vec3(0.0f, -1.0f, 0.0f) // 5: Bottom
+	};
 }
 
 Cube::Cube(const GLuint programId) : Cube()
@@ -28,7 +35,7 @@ Cube::Cube(float height, float width, float depth)
 	float halfWidth = width / 2.0f;
 	float halfDepth = depth / 2.0f;
 
-	vertices = {
+	verticesShape = {
 		glm::vec3(-halfWidth, -halfHeight, halfDepth),
 		glm::vec3(halfWidth, -halfHeight, halfDepth),
 		glm::vec3(halfWidth, halfHeight, halfDepth),
@@ -47,7 +54,8 @@ Cube::Cube(float height, float width, float depth)
 
 void Cube::CreateTriangles()
 {
-	triangles = new GLuint[36]{
+	this->trianglesSize = 36;
+	triangles = new GLuint[trianglesSize]{
 			0,1,2,
 			0,2,3,
 			1,5,6,
@@ -65,14 +73,12 @@ void Cube::CreateTriangles()
 
 void Cube::CreateUVs()
 {
-	uvs = {
-		   glm::vec2(0.0f, 0.0f), // Front bottom-left
-		   glm::vec2(1.0f, 0.0f), // Front bottom-right
-		   glm::vec2(1.0f, 1.0f), // Front top-right
-		   glm::vec2(0.0f, 1.0f), // Front top-left
-		   glm::vec2(0.0f, 0.0f), // Back bottom-left
-		   glm::vec2(1.0f, 0.0f), // Back bottom-right
-		   glm::vec2(1.0f, 1.0f), // Back top-right
-		   glm::vec2(0.0f, 1.0f)  // Back top-left
+	uvsShape = {
+		glm::vec2(0.0f, 0.0f), // 0: bottom left
+		glm::vec2(1.0f, 0.0f), // 1: bottom right
+		glm::vec2(1.0f, 1.0f), // 2: top right
+		glm::vec2(0.0f, 0.0f), // 3: bottom left
+		glm::vec2(1.0f, 1.0f), // 4: top right
+		glm::vec2(0.0f, 1.0f), // 5: top left
 	};
 }

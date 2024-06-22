@@ -11,7 +11,7 @@ public:
 	~IndexBuffer();
 	void Bind() const;
 	void Unbind() const;
-
+	void Update(const GLuint* data, unsigned int count); // Example: Update IBO if needed
 	inline unsigned int GetCount() const { return count; }
 };
 
