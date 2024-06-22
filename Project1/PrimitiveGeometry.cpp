@@ -25,31 +25,12 @@ void PrimitiveGeometry::Draw(GLProgram& program, const glm::mat4 view) const
 
 void PrimitiveGeometry::SetUp(const GLuint programID)
 {//based on triangles generate array of vertices normals and uvs
-	std::vector<glm::vec3> vertices = {
-		// Front face
-		verticesShape[0], verticesShape[1], verticesShape[2],
-		verticesShape[0], verticesShape[2], verticesShape[3],
+	std::vector<glm::vec3> vertices;
 
-		// Right face
-		verticesShape[1], verticesShape[5], verticesShape[6],
-		verticesShape[1], verticesShape[6], verticesShape[2],
-
-		// Back face
-		verticesShape[5], verticesShape[4], verticesShape[7],
-		verticesShape[5], verticesShape[7], verticesShape[6],
-
-		// Left face
-		verticesShape[4], verticesShape[0], verticesShape[3],
-		verticesShape[4], verticesShape[3], verticesShape[7],
-
-		// Top face
-		verticesShape[3], verticesShape[2], verticesShape[6],
-		verticesShape[3], verticesShape[6], verticesShape[7],
-
-		// Bottom face
-		verticesShape[4], verticesShape[5], verticesShape[1],
-		verticesShape[4], verticesShape[1], verticesShape[0]
-	};
+	for (int i = 0; i < trianglesSize; i++)
+	{
+		vertices.push_back(verticesShape[triangles[i]]);
+	}
 
 	std::vector<glm::vec3> normals;
 	for (int i = 0; i < 6; i++)

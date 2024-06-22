@@ -15,15 +15,11 @@ Geometry::Geometry()
 	color(glm::vec3(1.0f)),
 	dimensions({ 0.0f, 0.0f, 0.0f })
 {
+	std::cout << "Geometry created" << std::endl;
 }
 
-Geometry::Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> uvs, const GLuint program) :
-	texture(nullptr),
-	model(1.0f),
-	vao(new VertexArray()),
-	scale(glm::vec3(1.0f))
+Geometry::Geometry(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> uvs, const GLuint program) : Geometry()
 {
-
 	SetVertices(vertices, program);
 	SetNormals(normals, program);
 	SetUVs(uvs, program);
@@ -58,7 +54,6 @@ void Geometry::SetVertices(std::vector<glm::vec3> vertices, const GLuint program
 	VertexBuffer* vbo = new VertexBuffer(&vertices[0], vertices.size() * sizeof(glm::vec3));
 	VertexAttribute* vao = new VertexAttribute(programID, "position", 3, GL_FLOAT, GL_FALSE);
 	this->vao->AddBuffer(vao, vbo);
-	//delete vbo, vao;
 }
 
 
@@ -69,7 +64,6 @@ void Geometry::SetNormals(std::vector<glm::vec3> normals, const GLuint programID
 	VertexBuffer* vbo = new VertexBuffer(&normals[0], normals.size() * sizeof(glm::vec3));
 	VertexAttribute* vao = new VertexAttribute(programID, "normal", 3, GL_FLOAT, GL_FALSE);
 	this->vao->AddBuffer(vao, vbo);
-	//delete vbo, vao;
 }
 
 void Geometry::SetTexture(Texture* texture)

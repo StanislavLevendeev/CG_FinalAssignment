@@ -4,8 +4,7 @@
 int VertexArray::count = 1;
 VertexArray::VertexArray()
 {
-	GLCall(glGenVertexArrays(this->count, &this->rendererID));
-	this->count++;
+	GLCall(glGenVertexArrays(VertexArray::count, &this->rendererID));
 	GLCall(glBindVertexArray(this->rendererID));
 }
 
