@@ -59,6 +59,8 @@ JsonReader* reader = nullptr;
 
 Camera cam;
 
+bool Debug = false;
+
 //--------------------------------------------------------------------------------
 // Mouse poesition listener
 //--------------------------------------------------------------------------------
@@ -93,6 +95,13 @@ void keyboardHandler(unsigned char key, int a, int b)
 void Render()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	if (Debug) {
+		std::cout << "Rendering" << std::endl;
+		for (Mesh* mesh : meshes)
+			delete mesh;
+		meshes.clear();
+		meshes = reader->ReadJson("Meshes.json");
+	}
 
 	cam.SetUniforms(*program, WIDTH / HEIGHT);
 
