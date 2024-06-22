@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GLProgram.cpp" />
     <ClCompile Include="glsl.cpp" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="External Libraries\json.hpp" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GLProgram.h" />

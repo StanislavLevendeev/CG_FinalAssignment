@@ -24,7 +24,7 @@ void PrimitiveGeometry::Draw(GLProgram& program, const glm::mat4 view) const
 }
 
 void PrimitiveGeometry::SetUp(const GLuint programID)
-{//based on triangles generate array of vertices normals and uvs
+{
 	std::vector<glm::vec3> vertices;
 
 	for (int i = 0; i < trianglesSize; i++)
@@ -54,27 +54,3 @@ void PrimitiveGeometry::SetUp(const GLuint programID)
 	this->vao->Bind();
 	this->vao->Unbind();
 }
-
-void PrimitiveGeometry::CalculateNormals()
-{
-	//calculate normals for each vertex
-	normalsShape.resize(verticesShape.size());
-
-	for (size_t i = 0; i < trianglesSize; i += 3) {
-		glm::vec3 v1 = verticesShape[triangles[i]];
-		glm::vec3 v2 = verticesShape[triangles[i + 1]];
-		glm::vec3 v3 = verticesShape[triangles[i + 2]];
-
-		glm::vec3 normal = glm::cross(v2 - v1, v3 - v1);
-
-		normalsShape[triangles[i]] += normal;
-		normalsShape[triangles[i + 1]] += normal;
-		normalsShape[triangles[i + 2]] += normal;
-	}
-
-	// Normalize normals
-	for (size_t i = 0; i < normalsShape.size(); ++i) {
-		normalsShape[i] = glm::normalize(normalsShape[i]);
-	}
-}
-

@@ -1,6 +1,7 @@
 #include "JsonReader.h"
 #include <fstream>
 #include "Cube.h"
+#include "Cylinder.h"
 #include "objloader.h"
 #include <iostream>
 #include <stdexcept>
@@ -99,6 +100,14 @@ Geometry* JsonReader::ParseGeometry(const json& geometryJson)
 		std::string type = geometryJson["type"];
 		if (type == "cube") {
 			geometry = new Cube(programId);
+		}
+		else if (type == "cylinder") {
+			if (!geometryJson.contains("height") || !geometryJson["height"].is_number() ||
+				!geometryJson.contains("radius") || !geometryJson["radius"].is_number() ||
+				!geometryJson.contains("sides") || !geometryJson["sides"].is_number())
+				throw std::runtime_error("Cylinder geometry is missing height, radius, or sides");
+			else
+				geometry = new Cylinder(geometryJson["height"], geometryJson["radius"], geometryJson["sides"], programId);
 		}
 		else {
 			throw std::runtime_error("Unknown geometry type: " + type);
