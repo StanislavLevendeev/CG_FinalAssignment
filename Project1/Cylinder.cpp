@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include "Cylinder.h"
 #include <cmath>
-Cylinder::Cylinder()
+Cylinder::Cylinder() : PrimitiveGeometry()
 {
 }
 
@@ -113,8 +113,6 @@ void Cylinder::CreateVertices()
 		}
 	}
 
-	// the starting index for the base/top surface
-	//NOTE: it is used for generating indices later
 	this->baseCenterIndex = (int)verticesShape.size();
 
 	// put base and top vertices to arrays

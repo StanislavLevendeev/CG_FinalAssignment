@@ -3,24 +3,24 @@
 Cube::Cube()
 {
 	verticesShape = {
-		glm::vec3(-1.0f, -1.0f, 1.0f), // 0: Front bottom left
-		glm::vec3(1.0f, -1.0f, 1.0f), // 1: Front bottom right
-		glm::vec3(1.0f, 1.0f, 1.0f), // 2: Front top right
-		glm::vec3(-1.0f, 1.0f, 1.0f), // 3: Front top left
-		glm::vec3(-1.0f, -1.0f, -1.0f), // 4: Back bottom left
-		glm::vec3(1.0f, -1.0f, -1.0f), // 5: Back bottom right
-		glm::vec3(1.0f, 1.0f, -1.0f), // 6: Back top right
-		glm::vec3(-1.0f, 1.0f, -1.0f) // 7: Back top left
+		glm::vec3(-1.0f, -1.0f, 1.0f), 
+		glm::vec3(1.0f, -1.0f, 1.0f), 
+		glm::vec3(1.0f, 1.0f, 1.0f), 
+		glm::vec3(-1.0f, 1.0f, 1.0f),
+		glm::vec3(-1.0f, -1.0f, -1.0f), 
+		glm::vec3(1.0f, -1.0f, -1.0f), 
+		glm::vec3(1.0f, 1.0f, -1.0f), 
+		glm::vec3(-1.0f, 1.0f, -1.0f) 
 	};
 	CreateTriangles();
 	CreateUVs();
 	normalsShape = {
-		glm::vec3(0.0f, 0.0f, 1.0f), // 0: Front
-		glm::vec3(0.0f, 0.0f, -1.0f), // 1: Back
-		glm::vec3(1.0f, 0.0f, 0.0f), // 2: Right
-		glm::vec3(-1.0f, 0.0f, 0.0f), // 3: Left
-		glm::vec3(0.0f, 1.0f, 0.0f), // 4: Top
-		glm::vec3(0.0f, -1.0f, 0.0f) // 5: Bottom
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f), 
+		glm::vec3(1.0f, 0.0f, 0.0f), 
+		glm::vec3(-1.0f, 0.0f, 0.0f), 
+		glm::vec3(0.0f, 1.0f, 0.0f), 
+		glm::vec3(0.0f, -1.0f, 0.0f) 
 	};
 }
 
@@ -74,12 +74,12 @@ void Cube::CreateTriangles()
 void Cube::CreateUVs()
 {
 	uvsShape = {
-		glm::vec2(0.0f, 0.0f), // 0: bottom left
-		glm::vec2(1.0f, 0.0f), // 1: bottom right
-		glm::vec2(1.0f, 1.0f), // 2: top right
-		glm::vec2(0.0f, 0.0f), // 3: bottom left
-		glm::vec2(1.0f, 1.0f), // 4: top right
-		glm::vec2(0.0f, 1.0f), // 5: top left
+		glm::vec2(0.0f, 0.0f),
+		glm::vec2(1.0f, 0.0f),
+		glm::vec2(1.0f, 1.0f), 
+		glm::vec2(0.0f, 0.0f), 
+		glm::vec2(1.0f, 1.0f), 
+		glm::vec2(0.0f, 1.0f), 
 	};
 }
 
