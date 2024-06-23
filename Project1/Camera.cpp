@@ -122,9 +122,9 @@ void Camera::ToggleMode()
 		lastPos = position;
 		lastYaw = yaw;
 		lastPitch = pitch;
-		position = glm::vec3(0.0f, 0.0f, 0.0f);
-		yaw = 0.0f;
-		pitch = 0.0f;
+		position = POSITION;
+		yaw = YAW;
+		pitch = PITCH;
 	}
 	else if (mode == CameraMode::Drone) {
 		mode = CameraMode::Walk;

@@ -67,7 +67,6 @@ int currentTime = 0;
 //--------------------------------------------------------------------------------
 
 void mousePositionListener(int x, int y) {
-	std::cout << "Mouse position: " << x << " " << y << std::endl;
 	cam.ProcessMouseMovement(x, y);
 }
 void mouseWheel(int button, int dir, int x, int y)
@@ -85,7 +84,6 @@ void keyboardHandler(unsigned char key, int a, int b)
 	if (key == 27)
 		glutExit();
 	cam.ProcessKeyPressed(key);
-	std::cout << "Key pressed: " << key << std::endl;
 }
 
 
