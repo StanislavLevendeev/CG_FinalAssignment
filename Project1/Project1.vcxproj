@@ -141,6 +141,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshGroup.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="objloader.cpp" />
     <ClCompile Include="PrimitiveGeometry.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshGroup.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="objloader.h" />
     <ClInclude Include="PrimitiveGeometry.h" />
     <ClInclude Include="Renderer.h" />

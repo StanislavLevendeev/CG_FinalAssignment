@@ -3,7 +3,7 @@
 #include "Material.h"
 class Mesh : public Transformable
 {
-private:
+protected:
 	Geometry* geometry;
 	Material* material;
 public:

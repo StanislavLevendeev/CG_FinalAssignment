@@ -9,22 +9,12 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "glsl.h"
-#include "objloader.h"
-#include "texture.h"
-#include "VertexBuffer.h"
 #include "Renderer.h"
-#include "VertexAttribute.h"
-#include "VertexArray.h"
 #include "GLProgram.h"
-#include "Geometry.h"
-#include "Material.h"
-#include "Mesh.h"
 #include "Light.h"
 #include "Camera.h"
-#include "PrimitiveGeometry.h"
-#include "Cube.h"
 #include "JsonReader.h"
-
+#include "Mouse.h"
 
 //--------------------------------------------------------------------------------
 // Consts
@@ -58,8 +48,8 @@ std::vector<Mesh*> meshes;
 JsonReader* reader = nullptr;
 
 Camera cam;
-
-bool Debug = true;
+Mouse* mouse = nullptr;
+bool Debug = false;
 int currentTime = 0;
 
 //--------------------------------------------------------------------------------
@@ -84,6 +74,22 @@ void keyboardHandler(unsigned char key, int a, int b)
 	if (key == 27)
 		glutExit();
 	cam.ProcessKeyPressed(key);
+	if (key == 'I')
+		mouse->Translate(glm::vec3(0, 0.1, 0));
+	if (key == 'K')
+		mouse->Translate(glm::vec3(0, -0.1, 0));
+	if (key == 'J')
+		mouse->Translate(glm::vec3(-0.1, 0, 0));
+	if (key == 'L')
+		mouse->Translate(glm::vec3(0.1, 0, 0));
+	if (key == 'U')
+		mouse->Translate(glm::vec3(0, 0, 0.1));
+	if (key == 'O')
+		mouse->Translate(glm::vec3(0, 0, -0.1));
+	if (key == '1')
+		mouse->Animate();
+
+	std::cout << "Position: " << mouse->position.x << ' ' << mouse->position.y << ' ' << mouse->position.z << std::endl;
 }
 
 
@@ -110,8 +116,8 @@ void Render()
 
 	for (Mesh* mesh : meshes)
 		mesh->Draw(*program, cam.GetViewMatrix());
-
-
+	mouse->Animate();
+	mouse->Draw(*program, cam.GetViewMatrix());
 	glutSwapBuffers();
 
 }
@@ -184,7 +190,7 @@ int main(int argc, char** argv)
 	InitShaders();
 	InitJsonReader();
 	InitMaterialsLight();
-
+	mouse = new Mouse(program->GetID());
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
 
