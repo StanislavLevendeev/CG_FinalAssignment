@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Unignore .obj files in the map directory
+!Project1/Objects/*.obj
