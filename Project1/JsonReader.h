@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Mesh.h"
+#include "MeshGroup.h"
 #include "External Libraries/json.hpp"
 using json = nlohmann::json;
 class JsonReader
@@ -15,4 +16,5 @@ private:
 	Texture* ParseTexture(const json& textureJson);
 	Material* ParseMaterial(const json& materialJson);
 	Geometry* ParseGeometry(const json& geometryJson);
+	MeshGroup* ParseMeshGroup(const json& meshGroupJson);
 };

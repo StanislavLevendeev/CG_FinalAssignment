@@ -36,7 +36,7 @@ const char* fragshader_name = "fragmentshader.frag";
 const char* vertexshader_name = "vertexshader.vert";
 
 unsigned const int DELTA_TIME = 10;
-
+unsigned const int UPDATETIME = 30;
 
 //--------------------------------------------------------------------------------
 // Typedefs
@@ -59,7 +59,8 @@ JsonReader* reader = nullptr;
 
 Camera cam;
 
-bool Debug = false;
+bool Debug = true;
+int currentTime = 0;
 
 //--------------------------------------------------------------------------------
 // Mouse poesition listener
@@ -95,12 +96,14 @@ void keyboardHandler(unsigned char key, int a, int b)
 void Render()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	if (Debug) {
+	currentTime++;
+	if (Debug && currentTime >= UPDATETIME) {
 		std::cout << "Rendering" << std::endl;
 		for (Mesh* mesh : meshes)
 			delete mesh;
 		meshes.clear();
 		meshes = reader->ReadJson("Meshes.json");
+		currentTime = 0;
 	}
 
 	cam.SetUniforms(*program, WIDTH / HEIGHT);

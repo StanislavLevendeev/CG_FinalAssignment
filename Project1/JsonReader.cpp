@@ -42,8 +42,13 @@ Mesh* JsonReader::ParseMesh(const json& meshJson)
 		Material* material = ParseMaterial(meshJson["material"]);
 		mesh = new Mesh(geometry, material);
 	}
-	else {
-		mesh = new Mesh();
+	else if (meshJson.contains("meshes") && meshJson["meshes"].is_array()) {
+		mesh = ParseMeshGroup(meshJson);
+	}
+	else
+	{
+		throw std::runtime_error("Mesh must have geometry and material or meshes");
+		return nullptr;
 	}
 
 	if (meshJson.contains("position") && meshJson["position"].is_array())
@@ -130,17 +135,38 @@ Geometry* JsonReader::ParseGeometry(const json& geometryJson)
 
 		geometry = new Geometry(vertices, normals, uvs, programId);
 	}
-
-	if (geometryJson.contains("texture") && geometryJson["texture"].is_object()) {
+	if (geometryJson.contains("color") && geometryJson["color"].is_array()) {
+		geometry->color = glm::vec3(geometryJson["color"][0], geometryJson["color"][1], geometryJson["color"][2]);
+	}
+	else if (geometryJson.contains("texture") && geometryJson["texture"].is_object()) {
 		if (geometry)
 			geometry->SetTexture(ParseTexture(geometryJson["texture"]));
-	}
-	else if (geometryJson.contains("color") && geometryJson["color"].is_array()) {
-		geometry->color = glm::vec3(geometryJson["color"][0], geometryJson["color"][1], geometryJson["color"][2]);
 	}
 	else {
 		throw std::runtime_error("Geometry must have either a texture or a color");
 	}
 
 	return geometry;
+}
+
+MeshGroup* JsonReader::ParseMeshGroup(const json& meshGroupJson)
+{
+	MeshGroup* meshGroup = new MeshGroup();
+
+	if (meshGroupJson.contains("meshes") && meshGroupJson["meshes"].is_array()) {
+		for (const auto& meshJson : meshGroupJson["meshes"]) {
+			meshGroup->AddMesh(ParseMesh(meshJson));
+		}
+	}
+	else {
+		throw std::runtime_error("MeshGroup must have meshes");
+	}
+	if (meshGroupJson.contains("position") && meshGroupJson["position"].is_array())
+		meshGroup->Translate(glm::vec3(meshGroupJson["position"][0], meshGroupJson["position"][1], meshGroupJson["position"][2]));
+	if (meshGroupJson.contains("rotation") && meshGroupJson["rotation"].is_array())
+		meshGroup->Rotate(glm::vec3(meshGroupJson["rotation"][0], meshGroupJson["rotation"][1], meshGroupJson["rotation"][2]));
+	if (meshGroupJson.contains("scale") && meshGroupJson["scale"].is_array())
+		meshGroup->Scale(glm::vec3(meshGroupJson["scale"][0], meshGroupJson["scale"][1], meshGroupJson["scale"][2]));
+
+	return meshGroup;
 }

@@ -11,9 +11,9 @@ Geometry::Geometry()
 	vertices(),
 	normals(),
 	uvs(),
-	scale(glm::vec3(1.0f)),
 	color(glm::vec3(1.0f)),
-	dimensions({ 0.0f, 0.0f, 0.0f })
+	dimensions({ 0.0f, 0.0f, 0.0f }),
+	Transformable()
 {
 	std::cout << "Geometry created" << std::endl;
 }
@@ -80,52 +80,9 @@ void Geometry::SetUVs(std::vector<glm::vec2> uvs, const GLuint programID)
 	//delete vbo,vao;
 }
 
-void Geometry::Translate(glm::vec3 translation)
-{
-	position += translation;
-}
-
-void Geometry::Rotate(glm::vec3 axis)
-{
-	rotation += axis;
-}
-
-void Geometry::Rotate(float angle, glm::vec3 axis)
-{
-	axis = glm::normalize(axis);
-	if (axis.x != 0.0f)
-		rotation.x += angle * axis.x;
-	if (axis.y != 0.0f)
-		rotation.y += angle * axis.y;
-	if (axis.z != 0.0f)
-		rotation.z += angle * axis.z;
-}
-
-void Geometry::Scale(glm::vec3 scale)
-{
-	this->scale = scale;
-}
-
 bool Geometry::HasTexture() const
 {
 	return texture != nullptr;
-}
-
-
-glm::mat4 Geometry::GetModelMatrix() const
-{
-	glm::mat4 newModel = glm::mat4(1.0f); ;
-	newModel = glm::translate(newModel, this->position);
-
-	// Apply rotations in the correct order
-	newModel = glm::rotate(newModel, rotation.z, glm::vec3(0, 0, 1));
-	newModel = glm::rotate(newModel, rotation.y, glm::vec3(0, 1, 0));
-	newModel = glm::rotate(newModel, rotation.x, glm::vec3(1, 0, 0));
-
-	// Apply scaling last
-	newModel = glm::scale(newModel, scale);
-
-	return newModel;
 }
 
 void Geometry::CalculateDimensions()

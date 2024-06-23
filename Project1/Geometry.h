@@ -21,19 +21,11 @@ public:
 	void SetVertices(std::vector<glm::vec3> vertices, const GLuint);
 	void SetNormals(std::vector<glm::vec3> normals, const GLuint);
 	void SetTexture(Texture* texture);
-	void SetUVs(std::vector<glm::vec2> uvs, const GLuint);
-	void Translate(glm::vec3 translation);
-	void Rotate(float angle, glm::vec3 axis);
-	void Scale(glm::vec3 scale);
+	void SetUVs(std::vector<glm::vec2> uvs, const GLuint);;
 	bool HasTexture() const;
-	glm::mat4 GetModelMatrix() const;
-	glm::vec3  rotation;
-	glm::vec3  position;
-	glm::vec3  scale;
 	VertexArray* vao;
 	Texture* texture;
 	glm::vec3 color;
-	void Rotate(glm::vec3 axis);
 protected:
 	void CalculateDimensions();
 	glm::mat4 model;
