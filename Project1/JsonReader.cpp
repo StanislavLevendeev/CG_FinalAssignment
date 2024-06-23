@@ -145,7 +145,12 @@ Geometry* JsonReader::ParseGeometry(const json& geometryJson)
 	else {
 		throw std::runtime_error("Geometry must have either a texture or a color");
 	}
-
+	if (geometryJson.contains("position") && geometryJson["position"].is_array())
+		geometry->Translate(glm::vec3(geometryJson["position"][0], geometryJson["position"][1], geometryJson["position"][2]));
+	if (geometryJson.contains("rotation") && geometryJson["rotation"].is_array())
+		geometry->Rotate(glm::vec3(geometryJson["rotation"][0], geometryJson["rotation"][1], geometryJson["rotation"][2]));
+	if (geometryJson.contains("scale") && geometryJson["scale"].is_array())
+		geometry->Scale(glm::vec3(geometryJson["scale"][0], geometryJson["scale"][1], geometryJson["scale"][2]));
 	return geometry;
 }
 

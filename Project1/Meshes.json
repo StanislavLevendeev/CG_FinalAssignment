@@ -4,8 +4,7 @@
       "file": "Objects/OfficeTable.obj",
       "texture": {
         "fileName": "Textures/TableTexture.bmp"
-      },
-      "color": [0.5, 0.5, 0.5]
+      }
     },
     "material": {
       "ambient": [0.5, 0.5, 0.5],
@@ -13,15 +12,36 @@
       "specular": [0.2, 0.2, 0.2],
       "shininess": 16
     },
-    "position": [1, 0, 3],
-    "rotation": [0, 3.14, 0],
+    "position": [3.35, 0, -2.3],
+    "rotation": [0, 0, 0],
     "scale": [1, 1, 1]
   },
   {
     "geometry": {
       "file": "Objects/Whiteboard.obj",
       "texture": {
-        "fileName": "Textures/Whiteboard/Whitebord2.bmp"
+        "fileName": "Textures/Whiteboard/Whiteboard5.bmp"
+      },
+      "position": [0, 1, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1]
+    },
+    "material": {
+      "ambient": [0.3, 0.3, 0.3],
+      "diffuse": [0.4, 0.4, 0.4],
+      "specular": [0.1, 0.1, 0.1],
+      "shininess": 32
+    },
+    "position": [2.5, 3, -5.2],
+    "rotation": [0, 0, 0],
+    "scale": [1.5, 1.7, 1.5]
+  },
+  {
+    "geometry": {
+      "file": "Objects/Room.obj",
+      "texture": {
+        "fileName": "Textures/wall2.bmp",
+        "scaleFactor": 20
       }
     },
     "material": {
@@ -34,118 +54,7 @@
     "rotation": [0, 0, 0],
     "scale": [1, 1, 1]
   },
-  {
-    "geometry": {
-      "file": "Objects/Room.obj",
-      "texture": {
-        "fileName": "Textures/wall2.bmp",
-        "scaleFactor": 20
-      },
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
-    },
-    "position": [0, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "type": "cube",
-      "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
-      },
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
-    },
-    "position": [-2, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "type": "cube",
-      "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
-      },
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
-    },
-    "position": [4, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "type": "cube",
-      "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
-      },
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
-    },
-    "position": [-4, 0, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "type": "cube",
-      "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
-      },
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
-    },
-    "position": [3, 1, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
-  {
-    "geometry": {
-      "type": "cylinder",
-      "radius": 0.5,
-      "height": 1,
-      "sides": 20,
-      "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
-      },
-      "color": [0.5, 0.5, 0.5]
-    },
-    "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
-    },
-    "position": [0, 6, 0],
-    "rotation": [0, 0, 0],
-    "scale": [1, 1, 1]
-  },
+
   {
     "meshes": [
       {
@@ -175,7 +84,7 @@
           "texture": {
             "fileName": "Textures/Yellobrk.bmp"
           },
-          "color": [1.0, 1, 0.5]
+          "color": [1.0, 0.5, 0.5]
         },
         "material": {
           "ambient": [0.3, 0.3, 0.3],
@@ -183,7 +92,7 @@
           "specular": [0.1, 0.1, 0.1],
           "shininess": 32
         },
-        "position": [0, 0.5, "-0.2S"],
+        "position": [0, 0.45, -0.35],
         "rotation": [0, 0, 0],
         "scale": [0.05, 0.05, 0.2]
       },
@@ -201,7 +110,7 @@
           "specular": [0.1, 0.1, 0.1],
           "shininess": 32
         },
-        "position": [0, -0.5, -0.35],
+        "position": [0, -0.45, -0.35],
         "rotation": [0, 0, 0],
         "scale": [0.05, 0.05, 0.2]
       },
