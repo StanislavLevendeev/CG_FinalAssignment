@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "GLProgram.h"
 #include <glm/detail/type_mat.hpp>
+#include <iostream>
 #define ASSERT(x) if(!(x)) __debugbreak(); 
 #define GLCall(x) GLClearError();\
 	x;\

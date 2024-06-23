@@ -117,7 +117,6 @@ void Cube::SetUp(const GLuint programID)
 
 void Cube::CalculateNormals()
 {
-	//calculate normals for each vertex
 	normalsShape.resize(verticesShape.size());
 
 	for (size_t i = 0; i < trianglesSize; i += 3) {
@@ -132,7 +131,6 @@ void Cube::CalculateNormals()
 		normalsShape[triangles[i + 2]] += normal;
 	}
 
-	// Normalize normals
 	for (size_t i = 0; i < normalsShape.size(); ++i) {
 		normalsShape[i] = glm::normalize(normalsShape[i]);
 	}

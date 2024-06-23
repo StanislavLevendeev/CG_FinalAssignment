@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Shader.h"
-#include "Uniform.h"
 #include <glm/detail/type_vec.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <map>
@@ -19,12 +18,8 @@ public:
 	~GLProgram();
 	void Attach(Shader shaders[], unsigned int count);
 	void Attach(Shader& shader);
-	void Reattach();
 	void Bind() const;
 	void Unbind() const;
-	//void AttachUniform(Uniform& uniform);
-	//void DeleteUniform(const std::string& name);
-	//int* GetUniformLocations();
 	GLuint SetUniform1i(const GLchar* name, int value);
 	GLuint SetUniformMat4fv(const char* name, const glm::mat4& value);
 	GLuint SetUniform3fv(const GLchar* name, const glm::vec3& vector);

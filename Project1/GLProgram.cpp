@@ -56,25 +56,6 @@ void GLProgram::Attach(Shader& shader)
 	LinkProgram();
 }
 
-//void GLProgram::Detach(Shader& shader)
-//{
-//	GLCall(glAttachShader(rendererID, shaders[i].GetID()));
-//	this->shaders.push_back(&shaders[i]);
-//	LinkProgram();
-//}
-
-void GLProgram::Reattach()
-{
-	unsigned int count = shaders.size();
-
-	for (unsigned int i = 0; i < count; i++)
-	{
-		GLCall(glDetachShader(rendererID, shaders[i]->GetID()));
-		GLCall(glAttachShader(rendererID, shaders[i]->GetID()));
-	}
-
-	LinkProgram();
-}
 
 void GLProgram::Bind() const
 {
@@ -86,56 +67,12 @@ void GLProgram::Unbind() const
 	GLCall(glUseProgram(0));
 }
 
-//void GLProgram::AttachUniform(Uniform& uniform)
-//{
-//	uniforms.push_back(&uniform);
-//	uniformLocations = GetUniformLocations();
-//	Bind();
-//	UniformType type = uniform.GetType();
-//	switch (type)
-//	{
-//	case(UniformType::Float):
-//		GLCall(glUniform1f(uniformLocations[uniforms.size() - 1], *uniform.GetData()));
-//		break;
-//	case(UniformType::Matrix4fv):
-//		GLCall(glUniformMatrix4fv(uniformLocations[uniforms.size() - 1], 1, GL_FALSE, uniform.GetData()));
-//		break;
-//	case(UniformType::Vector3fv):
-//		GLCall(glUniform3fv(uniformLocations[uniforms.size() - 1], 1, uniform.GetData()));
-//		break;
-//	}
-//}
-
 GLuint GLProgram::SetUniform1i(const GLchar* name, int value)
 {
 	GLCall(glUniform1i(GetUniformLocation(name), value));
 	return uniformMap[name];
 }
 
-//void GLProgram::DeleteUniform(const std::string& name)
-//{
-//	for (Uniform* u : uniforms)
-//	{
-//		if (u->GetName() == name)
-//			uniforms.erase(uniforms.begin());
-//	}
-//
-//	uniformLocations = GetUniformLocations();
-//}
-//int* GLProgram::GetUniformLocations()
-//{
-//	if (uniformLocations != nullptr) free(uniformLocations);
-//
-//	unsigned int count = uniforms.size();
-//	int* ptr = (int*)malloc(count * sizeof(int));
-//
-//	for (unsigned int i = 0; i < count; i++)
-//	{
-//		GLCall((ptr[i]) = glGetUniformLocation(rendererID, uniforms[i]->GetName().c_str()));
-//	}
-//
-//	return ptr;
-//}
 GLuint GLProgram::SetUniformMat4fv(const char* name, const glm::mat4& value)
 {
 	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value)));

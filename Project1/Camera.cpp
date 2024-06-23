@@ -51,7 +51,6 @@ void Camera::ProcessMouseMovement(float posX, float posY, GLboolean constrainPit
 	yaw += xoffset;
 	pitch += yoffset;
 
-	// make sure that when pitch is out of bounds, screen doesn't get flipped
 	if (constrainPitch)
 	{
 		if (pitch > 89.0f)
@@ -60,7 +59,6 @@ void Camera::ProcessMouseMovement(float posX, float posY, GLboolean constrainPit
 			pitch = -89.0f;
 	}
 
-	// update Front, Right and Up Vectors using the updated Euler angles
 	UpdateCameraVectors();
 }
 void Camera::ProcessMouseScroll(float yoffset)
@@ -99,10 +97,8 @@ void  Camera::SetUniforms(GLProgram& program, float aspectRatio) {
 }
 void Camera::UpdateCameraVectors() {
 	if (mode == CameraMode::Walk) {
-		// Set the position to a fixed height of 1.8 on the y-axis
 		position.y = 1.8f;
 	}
-	// calculate the new Front vector based on the yaw and pitch
 	glm::vec3 front;
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	front.y = sin(glm::radians(pitch));
@@ -110,7 +106,6 @@ void Camera::UpdateCameraVectors() {
 	this->front = glm::normalize(front);
 
 
-	// also re-calculate the Right and Up vector
 	right = glm::normalize(glm::cross(this->front, worldUp));
 	up = glm::normalize(glm::cross(right, this->front));
 }
