@@ -7,10 +7,10 @@
       }
     },
     "material": {
-      "ambient": [0.5, 0.5, 0.5],
-      "diffuse": [0.6, 0.6, 0.6],
-      "specular": [0.2, 0.2, 0.2],
-      "shininess": 16
+      "ambient": [0.4, 0.4, 0.4],
+      "diffuse": [0.9, 0.9, 0.9],
+      "specular": [0.04, 0.04, 0.04],
+      "shininess": 10.0
     },
     "position": [3.65, 0, -2.3],
     "rotation": [0, 0, 0],
@@ -18,24 +18,22 @@
   },
   {
     "geometry": {
-      "file": "Objects/Whiteboard.obj",
-      "texture": {
-        "fileName": "Textures/Whiteboard/Whiteboard5.bmp"
-      },
-      "position": [0, 1, 0],
-      "rotation": [0, 0, 0],
-      "scale": [1, 1, 1]
+      "file": "Objects/laptop.obj",
+      "color": [0.3, 0.3, 0.3],
+      "rotation": [0, 3.14, 0],
+      "scale": [0.4, 0.4, 0.4]
     },
     "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
+      "ambient": [0.0, 0.0, 0.0],
+      "diffuse": [0.01, 0.01, 0.01],
+      "specular": [0.5, 0.5, 0.5],
+      "shininess": 32.0
     },
-    "position": [2.5, 1.5, -5.2],
+    "position": [3.65, 1.37, -2.3],
     "rotation": [0, 0, 0],
-    "scale": [1.5, 1.7, 1.5]
+    "scale": [1, 1, 1]
   },
+
   {
     "geometry": {
       "file": "Objects/Room.obj",
@@ -45,10 +43,10 @@
       }
     },
     "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
-      "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
+      "ambient": [0.2, 0.2, 0.2],
+      "diffuse": [0.8, 0.8, 0.8],
+      "specular": [0.3, 0.3, 0.3],
+      "shininess": 10.0
     },
     "position": [0, 0, 0],
     "rotation": [0, 0, 0],
@@ -74,9 +72,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -92,9 +87,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -110,9 +102,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -128,9 +117,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -146,9 +132,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -164,9 +147,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -182,9 +162,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -200,9 +177,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -218,9 +192,6 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
           "color": [1.0, 1.0, 1.0]
         },
         "material": {
@@ -246,16 +217,13 @@
           "radius": 0.3,
           "height": 1,
           "sides": 10,
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
-          "color": [1.0, 0.5, 0.5]
+          "color": [0.76, 0.76, 0.76]
         },
         "material": {
           "ambient": [0.3, 0.3, 0.3],
-          "diffuse": [0.4, 0.4, 0.4],
-          "specular": [0.1, 0.1, 0.1],
-          "shininess": 32
+          "diffuse": [0.7, 0.7, 0.7],
+          "specular": [0.6, 0.6, 0.6],
+          "shininess": 35.0
         },
         "position": [0, 0, 0],
         "rotation": [1.57, 0, 0],
@@ -264,16 +232,13 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
-          "color": [1.0, 0.5, 0.5]
+          "color": [0.76, 0.76, 0.76]
         },
         "material": {
           "ambient": [0.3, 0.3, 0.3],
-          "diffuse": [0.4, 0.4, 0.4],
-          "specular": [0.1, 0.1, 0.1],
-          "shininess": 32
+          "diffuse": [0.7, 0.7, 0.7],
+          "specular": [0.6, 0.6, 0.6],
+          "shininess": 35.0
         },
         "position": [0, 0.45, -0.35],
         "rotation": [0, 0, 0],
@@ -282,16 +247,13 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
-          "color": [1.0, 0.5, 0.5]
+          "color": [0.76, 0.76, 0.76]
         },
         "material": {
           "ambient": [0.3, 0.3, 0.3],
-          "diffuse": [0.4, 0.4, 0.4],
-          "specular": [0.1, 0.1, 0.1],
-          "shininess": 32
+          "diffuse": [0.7, 0.7, 0.7],
+          "specular": [0.6, 0.6, 0.6],
+          "shininess": 35.0
         },
         "position": [0, -0.45, -0.35],
         "rotation": [0, 0, 0],
@@ -300,16 +262,13 @@
       {
         "geometry": {
           "type": "cube",
-          "texture": {
-            "fileName": "Textures/Yellobrk.bmp"
-          },
-          "color": [1.0, 0.5, 0.5]
+          "color": [0.76, 0.76, 0.76]
         },
         "material": {
           "ambient": [0.3, 0.3, 0.3],
-          "diffuse": [0.4, 0.4, 0.4],
-          "specular": [0.1, 0.1, 0.1],
-          "shininess": 32
+          "diffuse": [0.7, 0.7, 0.7],
+          "specular": [0.6, 0.6, 0.6],
+          "shininess": 35.0
         },
         "position": [0, 0, -0.55],
         "rotation": [0, 0, 0],
@@ -327,9 +286,9 @@
       "height": 1,
       "sides": 20,
       "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
+        "fileName": "Textures/fabric.bmp",
+        "scaleFactor": 1
       },
-      "color": [1.0, 1.0, 0.0],
       "position": [0, 0.5, 0],
       "rotation": [1.57, 0, 0],
       "scale": [1, 1, 1]
@@ -338,7 +297,7 @@
       "ambient": [0.3, 0.3, 0.3],
       "diffuse": [0.4, 0.4, 0.4],
       "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
+      "shininess": 10
     },
     "position": [2.5, 0, -4],
     "rotation": [0, 0, 0],
@@ -347,24 +306,37 @@
   {
     "geometry": {
       "type": "cube",
-      "radius": 0.4,
-      "height": 1,
-      "sides": 20,
       "texture": {
-        "fileName": "Textures/Yellobrk.bmp"
+        "fileName": "Textures/dark-wooden.bmp"
       },
-      "color": [0.5, 0.3, 0.1],
       "position": [0, 2.3, 0],
       "rotation": [0, 0, 0],
       "scale": [0.5, 2.3, 1.6]
     },
     "material": {
-      "ambient": [0.3, 0.3, 0.3],
-      "diffuse": [0.4, 0.4, 0.4],
+      "ambient": [0.2, 0.1, 0.05],
+      "diffuse": [0.4, 0.2, 0.1],
       "specular": [0.1, 0.1, 0.1],
-      "shininess": 32
+      "shininess": 15.0
     },
     "position": [-1.07, 0, -3.01],
+    "rotation": [0, 0, 0],
+    "scale": [1, 1, 1]
+  },
+  {
+    "geometry": {
+      "file": "Objects/bed.obj",
+      "texture": {
+        "fileName": "Textures/BedTexture.bmp"
+      }
+    },
+    "material": {
+      "ambient": [0.2, 0.1, 0.05],
+      "diffuse": [0.4, 0.2, 0.1],
+      "specular": [0.1, 0.1, 0.1],
+      "shininess": 15.0
+    },
+    "position": [0.32, 0, 4.25],
     "rotation": [0, 0, 0],
     "scale": [1, 1, 1]
   }

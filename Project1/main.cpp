@@ -15,7 +15,7 @@
 #include "Camera.h"
 #include "JsonReader.h"
 #include "Mouse.h"
-
+#include "Whiteboard.h"
 //--------------------------------------------------------------------------------
 // Consts
 //--------------------------------------------------------------------------------
@@ -49,6 +49,7 @@ JsonReader* reader = nullptr;
 
 Camera cam;
 Mouse* mouse = nullptr;
+Whiteboard* whiteboard = nullptr;
 bool Debug = false;
 int currentTime = 0;
 
@@ -74,22 +75,6 @@ void keyboardHandler(unsigned char key, int a, int b)
 	if (key == 27)
 		glutExit();
 	cam.ProcessKeyPressed(key);
-	if (key == 'I')
-		mouse->Translate(glm::vec3(0, 0.1, 0));
-	if (key == 'K')
-		mouse->Translate(glm::vec3(0, -0.1, 0));
-	if (key == 'J')
-		mouse->Translate(glm::vec3(-0.1, 0, 0));
-	if (key == 'L')
-		mouse->Translate(glm::vec3(0.1, 0, 0));
-	if (key == 'U')
-		mouse->Translate(glm::vec3(0, 0, 0.1));
-	if (key == 'O')
-		mouse->Translate(glm::vec3(0, 0, -0.1));
-	if (key == '1')
-		mouse->Animate();
-
-	std::cout << "Position: " << mouse->position.x << ' ' << mouse->position.y << ' ' << mouse->position.z << std::endl;
 }
 
 
@@ -118,6 +103,8 @@ void Render()
 		mesh->Draw(*program, cam.GetViewMatrix());
 	mouse->Animate();
 	mouse->Draw(*program, cam.GetViewMatrix());
+	whiteboard->Animate();
+	whiteboard->Draw(*program, cam.GetViewMatrix());
 	glutSwapBuffers();
 
 }
@@ -177,7 +164,7 @@ void InitShaders()
 
 void InitMaterialsLight()
 {
-	light = new Light(glm::vec3(0.0, 4.0, 0.0));
+	light = new Light(glm::vec3(2.0, 5.0, 0.0));
 }
 
 void InitJsonReader() {
@@ -191,6 +178,7 @@ int main(int argc, char** argv)
 	InitJsonReader();
 	InitMaterialsLight();
 	mouse = new Mouse(program->GetID());
+	whiteboard = new Whiteboard(program->GetID());
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
 

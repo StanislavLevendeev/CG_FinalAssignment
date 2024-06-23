@@ -151,6 +151,7 @@
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexAttribute.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="Whiteboard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexAttribute.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="Whiteboard.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentshader.frag" />
